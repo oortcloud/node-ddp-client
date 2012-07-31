@@ -1,0 +1,16 @@
+{
+    "name": "ddpclient",
+    "version": "0.1.0",
+    "description": "Node.js module to connect to servers using DDP protocol.",
+    "author": "Tom Coleman",
+    "keywords": ["ddp", "meteor", "protocol"],
+    "repository" : {
+        "type": "git",
+        "url": "https://github.com/tmeasday/node-ddp-client.git"
+    },
+    "dependencies": {
+        "ws": "0.4.16", 
+        "underscore": ">=1.3.3"
+    },
+    "engines": { "node": "*" }
+}
