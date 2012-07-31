@@ -1,6 +1,6 @@
 var DDPClient = require("../lib/ddp-client"); 
 
-var ddpclient = new DDPClient("localhost", 3000);
+var ddpclient = new DDPClient({host: "localhost", port: 3000});
 
 ddpclient.connect(function() {
   
