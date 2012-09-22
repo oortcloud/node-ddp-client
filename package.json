@@ -1,6 +1,6 @@
 {
     "name": "ddp",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "description": "Node.js module to connect to servers using DDP protocol.",
     "author": "Tom Coleman",
     "main": "lib/ddp-client",
