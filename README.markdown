@@ -20,7 +20,7 @@ Example
 Please see the example in `examples/example.js`. Or here for reference:
 
 ```js
-var DDPClient = require("ddpclient-callbacks"); 
+var DDPClient = require("ddp"); 
 
 var ddpclient = new DDPClient("localhost", 3000);
 
