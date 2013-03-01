@@ -1,9 +1,14 @@
-var DDPClient = require("../lib/ddp-client"); 
+var DDPClient = require("../lib/ddp-client");
 
-var ddpclient = new DDPClient({host: "localhost", port: 3000});
+var ddpclient = new DDPClient({
+    host: "localhost",
+    port: 3000,
+    /* optional: */
+    auto_reconnect: true,
+    auto_reconnect_timer: 500
+  });
 
-ddpclient.on('connect', function() {
-  
+ddpclient.connect(function() {
   console.log('connected!');
   
   ddpclient.call('test-function', ['foo', 'bar'], function(err, result) {
@@ -15,22 +20,22 @@ ddpclient.on('connect', function() {
     console.log(ddpclient.collections.posts);
   })
 });
-ddpclient.on('close', function(code, message) {
-	console.log("Close: [%s] %s", code, message);
-	// Automatically reconnect
-	ddpclient.connect();
-});
-ddpclient.on('error', function(error) {
-	console.log("Error: %s", error);
-	// Reconnect after 1 sec.
-	setTimeout(function() { ddpclient.connect(); }, 1000);
-});
 
-// Useful for debugging
+/*
+ * Useful for debugging and learning the ddp protocol
+ */
 ddpclient.on('message', function(msg) {
 	console.log("ddp message: " + msg);
-	// You can also do cool stuff to the msg before it's processed.
 });	
 
-/* Last but not least - Actually start the connection */
-ddpclient.connect();
+/* 
+ * If you need to do something specific on close or errors.
+ * You can also disable auto_reconnect and 
+ * call ddpclient.connect() when you are ready to re-connect.
+*/
+ddpclient.on('socket-close', function(code, message) {
+  console.log("Close: %s %s", code, message);
+});
+ddpclient.on('socket-error', function(error) {
+  console.log("Error: %j", error);
+});
