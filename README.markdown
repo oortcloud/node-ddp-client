@@ -20,12 +20,17 @@ Example
 Please see the example in `examples/example.js`. Or here for reference:
 
 ```js
-var DDPClient = require("ddp"); 
+var DDPClient = require("ddp");
 
-var ddpclient = new DDPClient("localhost", 3000);
+var ddpclient = new DDPClient({
+    host: "localhost", 
+    port: 3000,
+    /* optional: */
+    auto_reconnect: true,
+    auto_reconnect_timer: 500
+  });
 
 ddpclient.connect(function() {
-  
   console.log('connected!');
   
   ddpclient.call('test-function', ['foo', 'bar'], function(err, result) {
@@ -37,9 +42,32 @@ ddpclient.connect(function() {
     console.log(ddpclient.collections.posts);
   })
 });
+
+/*
+ * Useful for debugging and learning the ddp protocol
+ */
+ddpclient.on('message', function(msg) {
+	console.log("ddp message: " + msg);
+});	
+
+/* 
+ * If you need to do something specific on close or errors.
+ * (You can also disable auto_reconnect and call ddpclient.connect()
+ *  when you are ready to re-connect.)
+*/
+ddpclient.on('socket-close', function(code, message) {
+  console.log("Close: %s %s", code, message);
+});
+ddpclient.on('socket-error', function(error) {
+  console.log("Error: %j", error);
+});
 ```
 
 Thanks
 ======
 
-Many thanks to Alan Sikora, and also Mike Bannister(@possibilities).
+Many thanks to Alan Sikora, and also Mike Bannister(@possibilities) for the initial ddp client.
+
+Contributions:
+ * Chris Mather (@eventedmind)
+ * Thomas Sarlandie (@sarfata)
