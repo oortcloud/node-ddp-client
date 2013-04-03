@@ -20,7 +20,7 @@ ddpclient.connect(function(error) {
     console.log('called function, result: ' + result);
   });
 
-  ddpclient.subscribe('allPackages', [], function() {
+  ddpclient.subscribe('posts', [], function() {
     console.log('posts complete:');
     console.log(ddpclient.collections.posts);
   });
