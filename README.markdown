@@ -30,7 +30,12 @@ var ddpclient = new DDPClient({
     auto_reconnect_timer: 500
   });
 
-ddpclient.connect(function() {
+ddpclient.connect(function(error) {
+  if (error) {
+    console.log('DDP connection error!');
+    return;
+  }
+  
   console.log('connected!');
   
   ddpclient.call('test-function', ['foo', 'bar'], function(err, result) {
@@ -77,8 +82,11 @@ Unimplemented Features
 Thanks
 ======
 
-Many thanks to Alan Sikora, and also Mike Bannister(@possibilities) for the initial ddp client.
+Many thanks to Alan Sikora for the ddp-client which formed the inspiration for this code.
 
 Contributions:
- * Chris Mather (@eventedmind)
+ * Tom Coleman (@tmeasday)
  * Thomas Sarlandie (@sarfata)
+ * Mason Gravitt (@emgee3)
+ * Mike Bannister (@possiblities)
+ * Chris Mather (@eventedmind)
