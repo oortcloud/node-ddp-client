@@ -21,6 +21,14 @@ describe("Connect to remote server", function() {
     prepareMocks();
   });
 
+  it('should connect to localhost by default', function() {
+    new DDPClient().connect();
+
+    assert(wsConstructor.calledOnce);
+    assert(wsConstructor.calledWithNew());
+    assert(wsConstructor.call)
+    assert.deepEqual(wsConstructor.args, [['ws://localhost:3000/websocket']]);
+  });
   it('should connect to the provided host', function() {
     new DDPClient({'host': 'myserver.com'}).connect();
     assert.deepEqual(wsConstructor.args, [['ws://myserver.com:3000/websocket']]);
