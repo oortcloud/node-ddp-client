@@ -49,13 +49,11 @@ describe('Automatic reconnection', function() {
   });
 
 
-  /* I am not sure why this test does not work. Something I am not doing well
-     with clock.tick() - I am leaving it here, hoping to understand why sometime soon...
-
-  it('should reconnect when the connection fails', function() {
-    var clock = sinon.useFakeTimers();
-
-    var ddpclient = new DDPClient();
+  /* We should be able to get this test to work with clock.tick() but for some weird 
+     reasons it does not work. See: https://github.com/cjohansen/Sinon.JS/issues/283
+   */
+  it('should reconnect when the connection fails', function(done) {
+    var ddpclient = new DDPClient({ auto_reconnect_timer: 10 });
 
     ddpclient.connect();
     wsMock.emit('error', {});
@@ -63,16 +61,12 @@ describe('Automatic reconnection', function() {
     // At this point, the constructor should have been called only once.
     assert(wsConstructor.calledOnce);
 
-    // Wait 501 ms
-    clock.tick(501);
-
-    // Now the constructor should have been called twice
-    console.log("Constructor called: %s time(s)", wsConstructor.callCount);
-    assert(wsConstructor.calledTwice);
-
-    clock.restore();
+    setTimeout(function() {
+      // Now the constructor should have been called twice
+      assert(wsConstructor.calledTwice);
+      done();
+    }, 15);
   });
-  */
 });
 
 describe("Network errors", function() {
@@ -104,8 +98,10 @@ describe("Network errors", function() {
 
     ddpclient.call('aServerMethod', [42], callCB);
 
-    // The callback should not be called but the global socket-error event should be triggered.
+    // The method callback should not be called
+    // The socket-error event should not be triggered now
+    // (but it will be triggered later by the socket)
     assert(!callCB.calledOnce);
-    assert(errorCB.calledOnce);
+    assert(!errorCB.calledOnce);
   });
 });
