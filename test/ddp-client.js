@@ -98,6 +98,7 @@ describe("Network errors", function() {
 
     ddpclient.call('aServerMethod', [42], callCB);
 
+    // First of all, the previous call should not throw anything.
     // The method callback should not be called
     // The socket-error event should not be triggered now
     // (but it will be triggered later by the socket)
