@@ -1,3 +1,7 @@
+0.3.3 - 2013-05-29
+ - fixed bug where an exception could be thrown when sending a message on a socket that is not opened anymore (issue #18)
+ - added some tests (work in progress)
+
 0.3.2 - 2013-04-08
   - fixed bug where client would reconnect when closing (@tarangp)
 
