@@ -1,7 +1,8 @@
 var assert = require('assert'),
-    sinon = require('sinon'),
+    sinon  = require('sinon'),
     rewire = require('rewire'),
-    events = require('events');
+    events = require('events'),
+    EJSON  = require('meteor-ejson');
 
 var DDPClient = rewire("../lib/ddp-client");
 
@@ -26,7 +27,7 @@ describe("Connect to remote server", function() {
 
     assert(wsConstructor.calledOnce);
     assert(wsConstructor.calledWithNew());
-    assert(wsConstructor.call)
+    assert(wsConstructor.call);
     assert.deepEqual(wsConstructor.args, [['ws://localhost:3000/websocket']]);
   });
   it('should connect to the provided host', function() {
@@ -72,7 +73,7 @@ describe('Automatic reconnection', function() {
 describe("Network errors", function() {
   beforeEach(function() {
     prepareMocks();
-  })
+  });
 
   // For some weird reasons (hard to reproduce) it happens that we try to send a message and
   // get an exception throws at us because the connection is not opened anymore.
@@ -106,3 +107,78 @@ describe("Network errors", function() {
     assert(!errorCB.calledOnce);
   });
 });
+
+
+describe('EJSON', function() {
+
+  var DDPMessage = '{"msg":"added","collection":"posts","id":"2trpvcQ4pn32ZYXco","fields":{"date":{"$date":1371591394454},"bindata":{"$binary":"QUJDRA=="}}}';
+  var EJSONObject = EJSON.parse(DDPMessage);
+
+  it('should not be enabled by default', function(done) {
+    var ddpclient = new DDPClient();
+
+    assert(!ddpclient.use_ejson);
+
+    done();
+  });
+
+  it('should not be used when disabled', function(done) {
+    var ddpclient = new DDPClient({ use_ejson : false });
+
+    assert(!ddpclient.use_ejson);
+
+    ddpclient._message(DDPMessage);
+
+    // ensure received dates not decoded from EJSON
+    assert.deepEqual(ddpclient.collections.posts['2trpvcQ4pn32ZYXco'].date, {"$date":1371591394454});
+
+    // ensure received binary data not decoded from EJSON date
+    assert.deepEqual(ddpclient.collections.posts['2trpvcQ4pn32ZYXco'].bindata, {"$binary":"QUJDRA=="});
+
+    ddpclient.socket = {};
+    ddpclient.socket.send = function (opts) {
+      // ensure sent dates not encoded into EJSON
+      assert(opts.indexOf("date")          !== -1);
+      assert(opts.indexOf("$date")         === -1);
+      assert(opts.indexOf("1371591394454") === -1);
+
+      // ensure sent binary data not encoded into EJSON
+      assert(opts.indexOf("bindata")       !== -1);
+      assert(opts.indexOf("$binary")       === -1);
+      assert(opts.indexOf("QUJDRA==")      === -1);
+    };
+
+    ddpclient._send(EJSONObject.fields);
+
+    done();
+  });
+
+  it('should be used if specifically enabled', function(done) {
+    var ddpclient = new DDPClient({ use_ejson : true });
+
+    assert(ddpclient.use_ejson);
+
+    ddpclient._message(DDPMessage);
+
+    assert.deepEqual(ddpclient.collections.posts['2trpvcQ4pn32ZYXco'].date, new Date(1371591394454));
+
+    assert.deepEqual(ddpclient.collections.posts['2trpvcQ4pn32ZYXco'].bindata, new Uint8Array([65, 66, 67, 68]));
+
+    ddpclient.socket = {};
+    ddpclient.socket.send = function (opts) {
+      assert(opts.indexOf("date")          !== -1);
+      assert(opts.indexOf("$date")         !== -1);
+      assert(opts.indexOf("1371591394454") !== -1);
+
+      assert(opts.indexOf("bindata")       !== -1);
+      assert(opts.indexOf("$binary")       !== -1);
+      assert(opts.indexOf("QUJDRA==")      !== -1);
+    };
+
+    ddpclient._send(EJSONObject.fields);
+
+    done();
+  });
+
+});
+

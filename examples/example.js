@@ -1,16 +1,17 @@
 var DDPClient = require("../lib/ddp-client");
 
 var ddpclient = new DDPClient({
-    host: "localhost",
-    port: 3000,
-    /* optional: */
-    auto_reconnect: true,
-    auto_reconnect_timer: 500
-  });
+  host: "localhost",
+  port: 3000,
+  /* optional: */
+  auto_reconnect: true,
+  auto_reconnect_timer: 500,
+  use_ejson: true  // default is false
+});
 
 ddpclient.connect(function(error) {
   console.log('connected!');
-  
+
   if (error) {
     console.log('DDP connection error!');
     return;
@@ -30,7 +31,7 @@ ddpclient.connect(function(error) {
  * Useful for debugging and learning the ddp protocol
  */
 ddpclient.on('message', function(msg) {
-	console.log("ddp message: " + msg);
+  console.log("ddp message: " + msg);
 });
 
 /* 
@@ -41,6 +42,7 @@ ddpclient.on('message', function(msg) {
 ddpclient.on('socket-close', function(code, message) {
   console.log("Close: %s %s", code, message);
 });
+
 ddpclient.on('socket-error', function(error) {
   console.log("Error: %j", error);
 });
