@@ -1,12 +1,13 @@
 var DDPClient = require("../lib/ddp-client");
 
 var ddpclient = new DDPClient({
-    host: "localhost",
-    port: 3000,
-    /* optional: */
-    auto_reconnect: true,
-    auto_reconnect_timer: 500
-  });
+  host: "localhost",
+  port: 3000,
+  /* optional: */
+  auto_reconnect: true,
+  auto_reconnect_timer: 500,
+  use_ejson: true  // default is false
+});
 
 ddpclient.connect(function(error) {
   console.log('connected!');
