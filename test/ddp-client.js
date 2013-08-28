@@ -1,5 +1,5 @@
 var assert = require('assert'),
-    sinon = require('sinon'),
+    sinon  = require('sinon'),
     rewire = require('rewire'),
     events = require('events');
 
@@ -26,7 +26,7 @@ describe("Connect to remote server", function() {
 
     assert(wsConstructor.calledOnce);
     assert(wsConstructor.calledWithNew());
-    assert(wsConstructor.call)
+    assert(wsConstructor.call);
     assert.deepEqual(wsConstructor.args, [['ws://localhost:3000/websocket']]);
   });
   it('should connect to the provided host', function() {
@@ -72,7 +72,7 @@ describe('Automatic reconnection', function() {
 describe("Network errors", function() {
   beforeEach(function() {
     prepareMocks();
-  })
+  });
 
   // For some weird reasons (hard to reproduce) it happens that we try to send a message and
   // get an exception throws at us because the connection is not opened anymore.

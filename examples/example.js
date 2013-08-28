@@ -10,7 +10,7 @@ var ddpclient = new DDPClient({
 
 ddpclient.connect(function(error) {
   console.log('connected!');
-  
+
   if (error) {
     console.log('DDP connection error!');
     return;
@@ -30,7 +30,7 @@ ddpclient.connect(function(error) {
  * Useful for debugging and learning the ddp protocol
  */
 ddpclient.on('message', function(msg) {
-	console.log("ddp message: " + msg);
+  console.log("ddp message: " + msg);
 });
 
 /* 
@@ -41,6 +41,7 @@ ddpclient.on('message', function(msg) {
 ddpclient.on('socket-close', function(code, message) {
   console.log("Close: %s %s", code, message);
 });
+
 ddpclient.on('socket-error', function(error) {
   console.log("Error: %j", error);
 });

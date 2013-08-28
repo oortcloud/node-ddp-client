@@ -52,17 +52,18 @@ ddpclient.connect(function(error) {
  * Useful for debugging and learning the ddp protocol
  */
 ddpclient.on('message', function(msg) {
-	console.log("ddp message: " + msg);
-});	
+  console.log("ddp message: " + msg);
+});
 
 /* 
  * If you need to do something specific on close or errors.
  * (You can also disable auto_reconnect and call ddpclient.connect()
- *  when you are ready to re-connect.)
+ * when you are ready to re-connect.)
 */
 ddpclient.on('socket-close', function(code, message) {
   console.log("Close: %s %s", code, message);
 });
+
 ddpclient.on('socket-error', function(error) {
   console.log("Error: %j", error);
 });
