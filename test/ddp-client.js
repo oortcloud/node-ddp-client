@@ -106,3 +106,39 @@ describe("Network errors", function() {
     assert(!errorCB.calledOnce);
   });
 });
+
+
+describe('EJSON', function() {
+  beforeEach(function() {
+    prepareMocks();
+  });
+
+  var DDPMessage = JSON.stringify(
+      {"msg":"added","collection":"posts","id":"2trpvcQ4pn32ZYXco","fields":{"date":{"$date":1371591394454}}}
+    );
+
+  it('should not be endabled by default', function(done) {
+    var ddpclient = new DDPClient();
+
+    assert(!ddpclient.use_ejson);
+
+    ddpclient._message(DDPMessage);
+
+    assert.deepEqual(ddpclient.collections.posts['2trpvcQ4pn32ZYXco'].date, {"$date":1371591394454});
+
+    done();
+  });
+
+  it('should be used if specifically enabled', function(done) {
+    var ddpclient = new DDPClient({ use_ejson : true });
+
+    assert(ddpclient.use_ejson);
+
+    ddpclient._message(DDPMessage);
+
+    assert.deepEqual(ddpclient.collections.posts['2trpvcQ4pn32ZYXco'].date, new Date(1371591394454));
+
+    done();
+  });
+});
+
