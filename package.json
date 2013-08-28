@@ -1,26 +1,40 @@
 {
-    "name": "ddp",
-    "version": "0.3.4",
-    "description": "Node.js module to connect to servers using DDP protocol.",
-    "author": "Tom Coleman <tom@thesnail.org> (http://tom.thesnail.org), Mike Bannister <notimpossiblemike@gmail.com> (http://po.ssibiliti.es)",
-    "main": "lib/ddp-client",
-    "keywords": ["ddp", "meteor", "protocol"],
-    "repository" : {
-        "type": "git",
-        "url": "https://github.com/oortcloud/node-ddp-client.git"
-    },
-    "dependencies": {
-        "ws": ">=0.4.23",
-        "underscore": ">=1.3.3",
-        "meteor-ejson": ">=0.6.3"
-    },
-    "devDependencies": {
-        "mocha": "1.9.x",
-        "sinon": "1.7.x",
-        "rewire": "1.1.x"
-    },
-    "scripts": {
-      "test": "./node_modules/mocha/bin/mocha test"
-    },
-    "engines": { "node": "*" }
+  "name": "ddp",
+  "version": "0.3.4",
+  "description": "Node.js module to connect to servers using DDP protocol.",
+  "author": "Tom Coleman <tom@thesnail.org> (http://tom.thesnail.org)",
+  "contributors": [
+    "Thomas Sarlandie <thomas@sarlandie.net> (http://www.sarfata.org)",
+    "Mason Gravitt <emgee@gravitronic.com>",
+    "Mike Bannister <notimpossiblemike@gmail.com> (http://po.ssibiliti.es)",
+    "Chris Mather <mather.chris@gmail.com> (http://eventedmind.com)"
+  ],
+  "main": "lib/ddp-client",
+  "keywords": [
+    "ddp",
+    "meteor",
+    "protocol"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/oortcloud/node-ddp-client.git"
+  },
+  "dependencies": {
+    "ws": ">=0.4.23",
+    "underscore": ">=1.3.3",
+    "meteor-ejson": ">=0.6.3"
+  },
+  "devDependencies": {
+    "mocha": "1.9.x",
+    "sinon": "1.7.x",
+    "rewire": "1.1.x",
+    "meteor-ejson": ">=0.6.3"
+  },
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha test"
+  },
+  "engines": {
+    "node": "*"
+  },
+  "bugs": "https://github.com/oortcloud/node-ddp-client/issues"
 }
