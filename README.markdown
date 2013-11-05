@@ -28,7 +28,9 @@ var ddpclient = new DDPClient({
   /* optional: */
   auto_reconnect: true,
   auto_reconnect_timer: 500,
-  use_ejson: true  // default is false
+  use_ejson: true,  // default is false
+  use_ssl: false, //connect to SSL server,
+  use_ssl_strict: true //Set to false if you dont have the ca
 });
 
 ddpclient.connect(function(error) {
