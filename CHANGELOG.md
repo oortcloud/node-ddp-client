@@ -1,3 +1,6 @@
+0.3.5 - 2013-11-05
+ - Added non strict SSL option in case of missing root certificates
+
 0.3.4 - 2013-08-28
  - added EJSON support (default is off) with a couple tests
 
