@@ -7,7 +7,8 @@
     "Thomas Sarlandie <thomas@sarlandie.net> (http://www.sarfata.org)",
     "Mason Gravitt <emgee@gravitronic.com>",
     "Mike Bannister <notimpossiblemike@gmail.com> (http://po.ssibiliti.es)",
-    "Chris Mather <mather.chris@gmail.com> (http://eventedmind.com)"
+    "Chris Mather <mather.chris@gmail.com> (http://eventedmind.com)",
+    "Tarang Patel"
   ],
   "main": "lib/ddp-client",
   "keywords": [
