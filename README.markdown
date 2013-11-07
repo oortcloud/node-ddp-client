@@ -41,6 +41,10 @@ ddpclient.connect(function(error) {
   
   console.log('connected!');
   
+  ddpclient.loginWithUsername("myusername","ddp-rocks",function(err,result) {
+      //Do stuff after login
+  });
+  
   ddpclient.call('test-function', ['foo', 'bar'], function(err, result) {
     console.log('called function, result: ' + result);
   })
