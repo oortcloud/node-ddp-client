@@ -1,3 +1,7 @@
+0.3.6 - 2013-11-07
+  - fixed bug with default params when ignoring root certs (in case the machine doesn't have the cert)
+  - Added DDP login with SRP authentication
+
 0.3.5 - 2013-11-05
  - Added non strict SSL option in case of missing root certificates
 
