@@ -182,3 +182,31 @@ describe('EJSON', function() {
 
 });
 
+describe('maintain_collections', function() {
+  var DDPMessage = '{"msg":"added","collection":"posts","id":"2trpvcQ4pn32ZYXco","fields":{"text":"A cat was here"}}';
+
+  it('should maintain collections by default', function() {
+    var ddpclient = new DDPClient();
+    ddpclient._message(DDPMessage);
+    // ensure collections exist and are populated by add messages
+    assert.equal(ddpclient.collections.posts['2trpvcQ4pn32ZYXco'].text, "A cat was here");
+  });
+
+  it('should maintain collections if maintain_collections is true', function() {
+    var ddpclient = new DDPClient({ maintain_collections : true });
+    ddpclient._message(DDPMessage);
+    // ensure collections exist and are populated by add messages
+    assert.equal(ddpclient.collections.posts['2trpvcQ4pn32ZYXco'].text, "A cat was here");
+  });
+
+  it('should not maintain collections if maintain_collections is false',
+     function() {
+       var ddpclient = new DDPClient({ maintain_collections : false });
+       ddpclient._message(DDPMessage);
+       // ensure there are no collections
+       assert(!ddpclient.collections);
+
+     }
+  );
+
+});
