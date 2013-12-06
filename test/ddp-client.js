@@ -13,9 +13,8 @@ function prepareMocks() {
 
   wsConstructor = sinon.stub();
   wsConstructor.returns(wsMock);
-  DDPClient.__set__('WebSocket', wsConstructor);
+  DDPClient.__set__('WebSocket', { Client: wsConstructor });
 }
-
 
 describe("Connect to remote server", function() {
   beforeEach(function() {
