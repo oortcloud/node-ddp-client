@@ -1,3 +1,6 @@
+0.4.1 - 2013-12-07
+  - Ability to switch off collections monitoring
+
 0.4.0 - 2013-12-07
   - Switched to faye-websockets (#26 by @jagill)
 
