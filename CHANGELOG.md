@@ -1,5 +1,5 @@
 0.4.0 - 2013-12-07
-  - Switched to faye-websockets
+  - Switched to faye-websockets (#26 by @jgill)
 
 0.3.6 - 2013-11-07
   - fixed bug with default params when ignoring root certs (in case the machine doesn't have the cert)
