@@ -1,3 +1,6 @@
+0.4.2 - 2013-12-14
+  - Use EJSON by default (#28)
+
 0.4.1 - 2013-12-07
   - Ability to switch off collections monitoring
 
