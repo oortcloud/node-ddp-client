@@ -1,3 +1,8 @@
+Next:
+
+  - Fix bug with socket reconnects tailspinning into an infinite loop (#30 by @jagill)
+  - Fix bug when use_ejson was not always set properly by default. (#29 by @jagill)
+
 0.4.2 - 2013-12-14
   - Use EJSON by default (#28)
 
