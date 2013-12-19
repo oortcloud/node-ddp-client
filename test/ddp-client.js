@@ -74,10 +74,10 @@ describe('EJSON', function() {
   var DDPMessage = '{"msg":"added","collection":"posts","id":"2trpvcQ4pn32ZYXco","fields":{"date":{"$date":1371591394454},"bindata":{"$binary":"QUJDRA=="}}}';
   var EJSONObject = EJSON.parse(DDPMessage);
 
-  it('should not be enabled by default', function(done) {
+  it('should be enabled by default', function(done) {
     var ddpclient = new DDPClient();
 
-    assert(!ddpclient.use_ejson);
+    assert(ddpclient.use_ejson);
 
     done();
   });
