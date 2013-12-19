@@ -56,7 +56,25 @@ describe('Automatic reconnection', function() {
     var ddpclient = new DDPClient({ auto_reconnect_timer: 10 });
 
     ddpclient.connect();
-    wsMock.emit('error', {});
+    wsMock.emit('close', {});
+
+    // At this point, the constructor should have been called only once.
+    assert(wsConstructor.calledOnce);
+
+    setTimeout(function() {
+      // Now the constructor should have been called twice
+      assert(wsConstructor.calledTwice);
+      done();
+    }, 15);
+  });
+
+  it('should reconnect only once when the connection fails rapidly', function(done) {
+    var ddpclient = new DDPClient({ auto_reconnect_timer: 5 });
+
+    ddpclient.connect();
+    wsMock.emit('close', {});
+    wsMock.emit('close', {});
+    wsMock.emit('close', {});
 
     // At this point, the constructor should have been called only once.
     assert(wsConstructor.calledOnce);
