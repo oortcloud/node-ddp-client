@@ -1,4 +1,4 @@
-Next:
+0.4.3 - 2013-12-19
 
   - Fix bug with socket reconnects tailspinning into an infinite loop (#30 by @jagill)
   - Fix bug when use_ejson was not always set properly by default. (#29 by @jagill)
