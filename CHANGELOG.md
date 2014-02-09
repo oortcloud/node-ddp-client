@@ -1,3 +1,7 @@
+0.4.4 - 2014-02-09
+
+  - Fix a bug where if the server responded to an error on the first step of SRP authentication it was not handled correctly (i.e when the user is not found)
+
 0.4.3 - 2013-12-19
 
   - Fix bug with socket reconnects tailspinning into an infinite loop (#30 by @jagill)
