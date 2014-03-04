@@ -8,6 +8,7 @@ var DDPClient = rewire("../lib/ddp-client");
 
 var wsConstructor, wsMock;
 
+
 function prepareMocks() {
   wsMock = new events.EventEmitter();
 
@@ -15,6 +16,7 @@ function prepareMocks() {
   wsConstructor.returns(wsMock);
   DDPClient.__set__('WebSocket', { Client: wsConstructor });
 }
+
 
 describe("Connect to remote server", function() {
   beforeEach(function() {
@@ -43,11 +45,11 @@ describe("Connect to remote server", function() {
   });
 });
 
+
 describe('Automatic reconnection', function() {
   beforeEach(function() {
     prepareMocks();
   });
-
 
   /* We should be able to get this test to work with clock.tick() but for some weird 
      reasons it does not work. See: https://github.com/cjohansen/Sinon.JS/issues/283
@@ -87,8 +89,8 @@ describe('Automatic reconnection', function() {
   });
 });
 
-describe('EJSON', function() {
 
+describe('EJSON', function() {
   var DDPMessage = '{"msg":"added","collection":"posts","id":"2trpvcQ4pn32ZYXco","fields":{"date":{"$date":1371591394454},"bindata":{"$binary":"QUJDRA=="}}}';
   var EJSONObject = EJSON.parse(DDPMessage);
 
@@ -160,31 +162,62 @@ describe('EJSON', function() {
 
 });
 
-describe('maintain_collections', function() {
-  var DDPMessage = '{"msg":"added","collection":"posts","id":"2trpvcQ4pn32ZYXco","fields":{"text":"A cat was here"}}';
+
+describe('Collection maintenance', function() {
+  var addedMessage    = '{"msg":"added","collection":"posts","id":"2trpvcQ4pn32ZYXco","fields":{"text":"A cat was here","value":true}}';
+  var changedMessage  = '{"msg":"changed","collection":"posts","id":"2trpvcQ4pn32ZYXco","fields":{"text":"A dog was here"}}';
+  var changedMessage2 = '{"msg":"changed","collection":"posts","id":"2trpvcQ4pn32ZYXco","cleared":["value"]}';
+  var removedMessage  = '{"msg":"removed","collection":"posts","id":"2trpvcQ4pn32ZYXco"}';
 
   it('should maintain collections by default', function() {
     var ddpclient = new DDPClient();
-    ddpclient._message(DDPMessage);
+    ddpclient._message(addedMessage);
     // ensure collections exist and are populated by add messages
     assert.equal(ddpclient.collections.posts['2trpvcQ4pn32ZYXco'].text, "A cat was here");
   });
 
   it('should maintain collections if maintain_collections is true', function() {
     var ddpclient = new DDPClient({ maintain_collections : true });
-    ddpclient._message(DDPMessage);
+    ddpclient._message(addedMessage);
     // ensure collections exist and are populated by add messages
     assert.equal(ddpclient.collections.posts['2trpvcQ4pn32ZYXco'].text, "A cat was here");
   });
 
-  it('should not maintain collections if maintain_collections is false',
-     function() {
-       var ddpclient = new DDPClient({ maintain_collections : false });
-       ddpclient._message(DDPMessage);
-       // ensure there are no collections
-       assert(!ddpclient.collections);
+  it('should not maintain collections if maintain_collections is false', function() {
+    var ddpclient = new DDPClient({ maintain_collections : false });
+    ddpclient._message(addedMessage);
+    // ensure there are no collections
+    assert(!ddpclient.collections);
+  });
 
-     }
-  );
+  it('should response to "added" messages', function() {
+    var ddpclient = new DDPClient();
+    ddpclient._message(addedMessage);
+    assert.equal(ddpclient.collections.posts['2trpvcQ4pn32ZYXco'].text, "A cat was here");
+    assert.equal(ddpclient.collections.posts['2trpvcQ4pn32ZYXco'].value, true);
+  });
 
+  it('should response to "changed" messages', function() {
+    var ddpclient = new DDPClient();
+    ddpclient._message(addedMessage);
+    ddpclient._message(changedMessage);
+    assert.equal(ddpclient.collections.posts['2trpvcQ4pn32ZYXco'].text, "A dog was here");
+    assert.equal(ddpclient.collections.posts['2trpvcQ4pn32ZYXco'].value, true);
+  });
+
+  it('should response to "changed" messages with "cleared"', function() {
+    var ddpclient = new DDPClient();
+    ddpclient._message(addedMessage);
+    ddpclient._message(changedMessage);
+    ddpclient._message(changedMessage2);
+    assert.equal(ddpclient.collections.posts['2trpvcQ4pn32ZYXco'].text, "A dog was here");
+    assert(!ddpclient.collections.posts['2trpvcQ4pn32ZYXco'].hasOwnProperty('value'));
+  });
+
+  it('should response to "removed" messages', function() {
+    var ddpclient = new DDPClient();
+    ddpclient._message(addedMessage);
+    ddpclient._message(removedMessage);
+    assert(!ddpclient.collections.posts.hasOwnProperty('2trpvcQ4pn32ZYXco'));
+  });
 });
