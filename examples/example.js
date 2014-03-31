@@ -6,7 +6,6 @@ var ddpclient = new DDPClient({
   /* optional: */
   auto_reconnect: true,
   auto_reconnect_timer: 500,
-  use_ejson: true  // default is false
 });
 
 ddpclient.connect(function(error) {
@@ -17,13 +16,17 @@ ddpclient.connect(function(error) {
     return;
   }
 
+  // Call a Meteor Method entitled 'test-function'
   ddpclient.call('test-function', ['foo', 'bar'], function(err, result) {
-    console.log('called function, result: ' + result);
+    if (err) console.log('METHOD ERROR: ', err);
+    console.log('METHOD RESULTS: ', result);
   });
 
+  // Subscribe to a Meteor Publication entitled 'posts'
   ddpclient.subscribe('posts', [], function() {
-    console.log('posts complete:');
+    console.log('\n\nSUBSCRIPTION READY:');
     console.log(ddpclient.collections.posts);
+    console.log('\n\n');
   });
 });
 
@@ -31,7 +34,7 @@ ddpclient.connect(function(error) {
  * Useful for debugging and learning the ddp protocol
  */
 ddpclient.on('message', function(msg) {
-  console.log("ddp message: " + msg);
+  console.log("RECEIVED MESSAGE: " + msg + "\n");
 });
 
 /* 
@@ -40,9 +43,9 @@ ddpclient.on('message', function(msg) {
  * call ddpclient.connect() when you are ready to re-connect.
 */
 ddpclient.on('socket-close', function(code, message) {
-  console.log("Close: %s %s", code, message);
+  console.log("SOCKET CLOSE: %s %s", code, message);
 });
 
 ddpclient.on('socket-error', function(error) {
-  console.log("Error: %j", error);
+  console.log("SOCKET ERROR: %j", error);
 });
