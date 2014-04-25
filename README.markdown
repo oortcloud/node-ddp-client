@@ -42,7 +42,7 @@ ddpclient.connect(function(error) {
   
   console.log('connected!');
   
-  ddpclient.loginWithUsername("myusername","ddp-rocks",function(err) {
+  ddpclient.loginWithUsername("myusername","ddp-rocks",function(err, result) {
       //Do stuff after login
   });
   
