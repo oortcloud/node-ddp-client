@@ -29,8 +29,7 @@
   "devDependencies": {
     "mocha": "1.9.x",
     "sinon": "1.7.x",
-    "rewire": "1.1.x",
-    "meteor-ejson": ">=0.6.3"
+    "rewire": "1.1.x"
   },
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha test"
