@@ -1,3 +1,11 @@
+0.4.6 - 2014-04-28
+
+  - Return id used when calling subscribe method
+
+0.4.5 - 2014-04-24
+
+  - Fix login with password method to return login token 
+
 0.4.4 - 2014-02-09
 
   - Fix a bug where if the server responded to an error on the first step of SRP authentication it was not handled correctly (i.e when the user is not found)
