@@ -102,6 +102,15 @@ describe('EJSON', function() {
     done();
   });
 
+  it('should expose the EJSON object', function(done) {
+    var ddpclient = new DDPClient();
+
+    assert(ddpclient.EJSON);
+    assert(ddpclient.EJSON.addType);
+
+    done();
+  });
+
   it('should not be used when disabled', function(done) {
     var ddpclient = new DDPClient({ use_ejson : false });
 
