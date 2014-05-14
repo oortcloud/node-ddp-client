@@ -3,8 +3,8 @@
   - Use ddp-ejson instead of meteor-ejson. ddp-ejson is a repackage of Meteor's latest EJSON package
   - Use ddp-srp insead of node-srp. ddp-srp is a repackage of Meteor's latest SRP package
   - Added second callback to ddpclient.call, executed when the DDP `updated` message is received
-  - TODO: Allow automatic EJSON serialization/deserialization of ObjectIDs
-  - TODO: Expose EJSON package to allow for addition of custom EJSON types
+  - Allow automatic EJSON serialization/deserialization of ObjectIDs
+  - Expose EJSON package to allow for addition of custom EJSON types
   - added DDP pre2 support
     - DDP version negotiation
     - DDP heartbeat support (reply only)
@@ -16,7 +16,7 @@
 
 0.4.5 - 2014-04-24
 
-  - Fix login with password method to return login token 
+  - Fix login with password method to return login token
 
 0.4.4 - 2014-02-09
 
