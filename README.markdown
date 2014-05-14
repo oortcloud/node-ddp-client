@@ -28,10 +28,9 @@ var ddpclient = new DDPClient({
   /* optional: */
   auto_reconnect: true,
   auto_reconnect_timer: 500,
-  use_ejson: true,  // default is false
-  use_ssl: false, //connect to SSL server,
-  use_ssl_strict: true, //Set to false if you have root ca trouble.
-  maintain_collections: true //Set to false to maintain your own collections.
+  use_ejson: true,           // Use Meteor's EJSON to preserve certain data types.
+  use_ssl: false,            
+  maintain_collections: true // Set to false to maintain your own collections.
 });
 
 ddpclient.connect(function(error) {
@@ -39,34 +38,34 @@ ddpclient.connect(function(error) {
     console.log('DDP connection error!');
     return;
   }
-  
+
   console.log('connected!');
-  
-  ddpclient.loginWithUsername("myusername","ddp-rocks",function(err, result) {
-      //Do stuff after login
+
+  ddpclient.loginWithUsername("username", "password", function (err, result) {
+    // result contains your auth token
+
+    ddpclient.call('test-function', ['foo', 'bar'], function (err, result) {
+      console.log('called function, result: ' + result);
+    });
+
+    ddpclient.subscribe('posts', [], function () {
+      console.log('posts complete:');
+      console.log(ddpclient.collections.posts);
+    });
   });
-  
-  ddpclient.call('test-function', ['foo', 'bar'], function(err, result) {
-    console.log('called function, result: ' + result);
-  })
-  
-  ddpclient.subscribe('posts', [], function() {
-    console.log('posts complete:');
-    console.log(ddpclient.collections.posts);
-  })
 });
 
 /*
  * Useful for debugging and learning the ddp protocol
  */
-ddpclient.on('message', function(msg) {
+ddpclient.on('message', function (msg) {
   console.log("ddp message: " + msg);
 });
 
 /* 
  * If you need to do something specific on close or errors.
- * (You can also disable auto_reconnect and call ddpclient.connect()
- * when you are ready to re-connect.)
+ * You can also disable auto_reconnect and 
+ * call ddpclient.connect() when you are ready to re-connect.
 */
 ddpclient.on('socket-close', function(code, message) {
   console.log("Close: %s %s", code, message);
@@ -79,12 +78,13 @@ ddpclient.on('socket-error', function(error) {
 
 Unimplemented Features
 ====
+The node DDP client does not implement ordered collections, something that while in the DDP spec has not been implemented in Meteor yet.
+
 * Server to Client messages
   * 'addedBefore'
   * 'movedBefore'
   * 'error'
   * 'updated'
-
 
 
 Thanks
