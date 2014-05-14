@@ -1,11 +1,9 @@
 Node DDP Client
 ===============
 
-A callback style DDP ([Meteor](http://meteor.com/)'s Distributed Data Protocol) node client.
+A callback style DDP ([Meteor](http://meteor.com/)'s Distributed Data Protocol) node client, originally based alansikora's [node-js_ddp-client](https://github.com/alansikora/node-js_ddp-client) and Meteor's python client. Uses a more callback style approach.
 
-Based _heavily_ on alansikora's [node-js_ddp-client](https://github.com/alansikora/node-js_ddp-client), and meteor's python client. Uses a more callback style approach.
-
-The client implements the pre1 version of DDP, with optional [EJSON](http://docs.meteor.com/#ejson) support. It is unfinished at this point, but should do most of what you want it to do.
+The client implements the pre1 and pre2 versions of DDP. 
 
 Installation
 ============
@@ -106,13 +104,6 @@ ddpclient.on('socket-error', function(error) {
 Unimplemented Features
 ====
 The node DDP client does not implement ordered collections, something that while in the DDP spec has not been implemented in Meteor yet.
-
-* Server to Client messages
-  * 'addedBefore'
-  * 'movedBefore'
-  * 'error'
-  * 'updated'
-
 
 Thanks
 ======
