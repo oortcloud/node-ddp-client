@@ -33,6 +33,9 @@ var ddpclient = new DDPClient({
   maintain_collections: true // Set to false to maintain your own collections.
 });
 
+/*
+ * Connect to the Meteor Server
+ */
 ddpclient.connect(function(error) {
   if (error) {
     console.log('DDP connection error!');
@@ -41,18 +44,41 @@ ddpclient.connect(function(error) {
 
   console.log('connected!');
 
-  ddpclient.loginWithUsername("username", "password", function (err, result) {
+  /*
+   * Uncomment to log in with username/password
+   */
+  // ddpclient.loginWithUsername("username", "password", function (err, result) {
     // result contains your auth token
 
-    ddpclient.call('test-function', ['foo', 'bar'], function (err, result) {
-      console.log('called function, result: ' + result);
-    });
+    setTimeout(function () {
+      /*
+       * Call a Meteor Method
+       */
+      ddpclient.call(
+        'deletePosts',             // name of Meteor Method being called
+        ['foo', 'bar'],            // parameters to send to Meteor Method
+        function (err, result) {   // callback which returns the method call results
+          console.log('called function, result: ' + result);
+        },
+        function () {              // callback which fires when server has finished 
+          console.log('updated');  // sending any updated documents as a result of
+          console.log(ddpclient.collections.posts);  // calling this method 
+        }                          
+      );
+    }, 3000);
 
-    ddpclient.subscribe('posts', [], function () {
-      console.log('posts complete:');
-      console.log(ddpclient.collections.posts);
-    });
-  });
+    /*
+     * Subscribe to a Meteor Xollection
+     */
+    ddpclient.subscribe(
+      'posts',                  // name of Meteor Publish function to subscribe to
+      [],                       // any parameters used by the Publish function
+      function () {             // callback when the subscription is complete
+        console.log('posts complete:');
+        console.log(ddpclient.collections.posts);
+      }
+    );
+  // });
 });
 
 /*
@@ -74,6 +100,7 @@ ddpclient.on('socket-close', function(code, message) {
 ddpclient.on('socket-error', function(error) {
   console.log("Error: %j", error);
 });
+
 ```
 
 Unimplemented Features
