@@ -1,0 +1,16 @@
+<head>
+  <title>ddp-test</title>
+</head>
+
+<body>
+  {{> posts}}
+</body>
+
+<template name="posts">
+  <h1>Hello World!</h1>
+  <ol>
+    {{#each posts}}
+      <li>{{body}}</li>
+    {{/each}}
+  </ol>
+</template>
