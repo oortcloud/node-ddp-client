@@ -23,7 +23,7 @@ Please see the example in `examples/example.js`. Or here for reference:
 var DDPClient = require("ddp");
 
 var ddpclient = new DDPClient({
-  host: "localhost", 
+  host: "localhost",
   port: 3000,
   /* optional: */
   auto_reconnect: true,
@@ -39,17 +39,17 @@ ddpclient.connect(function(error) {
     console.log('DDP connection error!');
     return;
   }
-  
+
   console.log('connected!');
-  
+
   ddpclient.loginWithUsername("myusername","ddp-rocks",function(err, result) {
       //Do stuff after login
   });
-  
+
   ddpclient.call('test-function', ['foo', 'bar'], function(err, result) {
     console.log('called function, result: ' + result);
   })
-  
+
   ddpclient.subscribe('posts', [], function() {
     console.log('posts complete:');
     console.log(ddpclient.collections.posts);
@@ -63,7 +63,7 @@ ddpclient.on('message', function(msg) {
   console.log("ddp message: " + msg);
 });
 
-/* 
+/*
  * If you need to do something specific on close or errors.
  * (You can also disable auto_reconnect and call ddpclient.connect()
  * when you are ready to re-connect.)
@@ -75,6 +75,13 @@ ddpclient.on('socket-close', function(code, message) {
 ddpclient.on('socket-error', function(error) {
   console.log("Error: %j", error);
 });
+
+/*
+ * If use_ejson is true and you need access to the EJSON object:
+ */
+
+var oid = new ddpclient.EJSON.ObjectID();
+
 ```
 
 Unimplemented Features
@@ -99,3 +106,4 @@ Contributions:
  * Mike Bannister (@possiblities)
  * Chris Mather (@eventedmind)
  * James Gill (@jagill)
+ * Vaughn Iverson (@vsivsi)
