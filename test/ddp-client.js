@@ -2,7 +2,7 @@ var assert = require('assert'),
     sinon  = require('sinon'),
     rewire = require('rewire'),
     events = require('events'),
-    EJSON  = require('meteor-ejson');
+    EJSON  = require('ddp-ejson');
 
 var DDPClient = rewire("../lib/ddp-client");
 
