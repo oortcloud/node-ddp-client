@@ -24,7 +24,8 @@
     "underscore": "1.5.2",
     "ddp-ejson": "0.8.1-2",
     "ddp-srp": "0.8.1-1",
-    "faye-websocket": "~0.7.1"
+    "faye-websocket": "~0.7.1",
+    "ddp-random": "~0.8.1-1"
   },
   "devDependencies": {
     "mocha": "1.9.x",
