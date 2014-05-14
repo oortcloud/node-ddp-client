@@ -1,3 +1,15 @@
+0.5.0 -
+
+  - Use ddp-ejson instead of meteor-ejson. ddp-ejson is a repackage of Meteor's latest EJSON package
+  - Use ddp-srp insead of node-srp. ddp-srp is a repackage of Meteor's latest SRP package
+  - Added second callback to ddpclient.call, executed when the DDP `updated` message is received
+  - TODO: Allow automatic EJSON serialization/deserialization of ObjectIDs
+  - TODO: Expose EJSON package to allow for addition of custom EJSON types
+  - added DDP pre2 support
+    - DDP version negotiation
+    - DDP heartbeat support (reply only)
+    - `ddpclient.callWithRandomSeed` supports client-generated `_id`s
+
 0.4.6 - 2014-04-28
 
   - Return id used when calling subscribe method
