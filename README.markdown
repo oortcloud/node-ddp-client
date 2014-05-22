@@ -66,7 +66,7 @@ ddpclient.connect(function(error) {
     }, 3000);
 
     /*
-     * Call a Meteor Method while passing in a random seed. 
+     * Call a Meteor Method while passing in a random seed.
      * Added in DDP pre2, the random seed will be used on the server to generate
      * repeatable IDs. This allows the same id to be generated on the client and server
      */
@@ -75,16 +75,16 @@ ddpclient.connect(function(error) {
 
     ddpclient.callWithRandomSeed(
       'createPost',              // name of Meteor Method being called
-      [{ _id : random.id(),      // generate the id on the client 
-        body : "asdf" }],            
+      [{ _id : random.id(),      // generate the id on the client
+        body : "asdf" }],
       "randomSeed",              // pass the same seed to the server
       function (err, result) {   // callback which returns the method call results
         console.log('called function, result: ' + result);
       },
-      function () {              // callback which fires when server has finished 
+      function () {              // callback which fires when server has finished
         console.log('updated');  // sending any updated documents as a result of
-        console.log(ddpclient.collections.posts);  // calling this method 
-      }                          
+        console.log(ddpclient.collections.posts);  // calling this method
+      }
     );
 
     /*
@@ -143,4 +143,4 @@ Contributions:
  * Mike Bannister (@possiblities)
  * Chris Mather (@eventedmind)
  * James Gill (@jagill)
- * Vaughn Iverson
+ * Vaughn Iverson (@vsivsi)
