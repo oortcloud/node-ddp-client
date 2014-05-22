@@ -109,6 +109,12 @@ ddpclient.on('message', function (msg) {
 });
 
 /*
+ * Close the ddp connection. This will close the socket, removing it
+ * from the event-loop, allowing your application to terminate gracefully
+ */
+ddpclient.close()
+
+/*
  * If you need to do something specific on close or errors.
  * You can also disable auto_reconnect and
  * call ddpclient.connect() when you are ready to re-connect.
