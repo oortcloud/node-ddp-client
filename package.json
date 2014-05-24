@@ -1,6 +1,6 @@
 {
   "name": "ddp",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Node.js module to connect to servers using DDP protocol.",
   "author": "Tom Coleman <tom@thesnail.org> (http://tom.thesnail.org)",
   "contributors": [
@@ -21,9 +21,9 @@
     "url": "https://github.com/oortcloud/node-ddp-client.git"
   },
   "dependencies": {
-    "underscore": "1.5.2",
-    "ddp-ejson": "0.8.1-2",
-    "ddp-srp": "0.8.1-1",
+    "ddp-underscore-patched": "0.8.1-2",
+    "ddp-ejson": "0.8.1-3",
+    "ddp-srp": "0.8.1-2",
     "faye-websocket": "~0.7.1",
     "ddp-random": "~0.8.1-1"
   },
