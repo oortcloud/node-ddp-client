@@ -35,6 +35,8 @@ var ddpclient = new DDPClient({
  * Connect to the Meteor Server
  */
 ddpclient.connect(function(error) {
+  // If auto_reconnect is true, this callback will be invoked each time
+  // a server connection is re-established
   if (error) {
     console.log('DDP connection error!');
     return;
@@ -112,7 +114,7 @@ ddpclient.on('message', function (msg) {
  * Close the ddp connection. This will close the socket, removing it
  * from the event-loop, allowing your application to terminate gracefully
  */
-ddpclient.close()
+ddpclient.close();
 
 /*
  * If you need to do something specific on close or errors.
