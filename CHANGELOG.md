@@ -1,3 +1,7 @@
+0.5.2 - 2014-06-01
+
+  - Added MIT License
+
 0.5.1 - 2014-05-23
 
   - Switch to MDG-patched version of underscore.
