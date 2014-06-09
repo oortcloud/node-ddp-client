@@ -1,3 +1,7 @@
+0.6.0 - 2014-06-08
+
+  - Update collection before emitting `message`. 
+
 0.5.2 - 2014-06-01
 
   - Added MIT License
