@@ -12,9 +12,12 @@
 
 0.5.0 - 2014-05-14
 
-  - Use ddp-ejson instead of meteor-ejson. ddp-ejson is a repackage of Meteor's latest EJSON package
-  - Use ddp-srp insead of node-srp. ddp-srp is a repackage of Meteor's latest SRP package
-  - Added second callback to ddpclient.call, executed when the DDP `updated` message is received
+  - Use ddp-ejson instead of meteor-ejson. ddp-ejson is a repackage of 
+    Meteor's latest EJSON package
+  - Use ddp-srp insead of node-srp. ddp-srp is a repackage of Meteor's 
+    latest SRP package
+  - Added second callback to ddpclient.call, executed when the DDP 
+    `updated` message is received
   - Allow automatic EJSON serialization/deserialization of ObjectIDs
   - Expose EJSON package to allow for addition of custom EJSON types
   - added DDP pre2 support
@@ -32,12 +35,16 @@
 
 0.4.4 - 2014-02-09
 
-  - Fix a bug where if the server responded to an error on the first step of SRP authentication it was not handled correctly (i.e when the user is not found)
+  - Fix a bug where if the server responded to an error on the first 
+    step of SRP authentication it was not handled correctly (i.e when 
+    the user is not found)
 
 0.4.3 - 2013-12-19
 
-  - Fix bug with socket reconnects tailspinning into an infinite loop (#30 by @jagill)
-  - Fix bug when use_ejson was not always set properly by default. (#29 by @jagill)
+  - Fix bug with socket reconnects tailspinning into an infinite loop 
+    (#30 by @jagill)
+  - Fix bug when use_ejson was not always set properly by default. 
+    (#29 by @jagill)
 
 0.4.2 - 2013-12-14
 
@@ -53,7 +60,8 @@
 
 0.3.6 - 2013-11-07
 
-  - fixed bug with default params when ignoring root certs (in case the machine doesn't have the cert)
+  - fixed bug with default params when ignoring root certs (in case the 
+    machine doesn't have the cert)
   - Added DDP login with SRP authentication
 
 0.3.5 - 2013-11-05
@@ -66,7 +74,8 @@
 
 0.3.3 - 2013-05-29
 
- - fixed bug where an exception could be thrown when sending a message on a socket that is not opened anymore (issue #18)
+ - fixed bug where an exception could be thrown when sending a message on 
+   a socket that is not opened anymore (issue #18)
  - added some tests (work in progress)
 
 0.3.2 - 2013-04-08
@@ -75,7 +84,8 @@
 
 0.3.1 - 2013-04-06
 
-  - added a failed message to the connect callback if version negotiation fails.
+  - added a failed message to the connect callback if version negotiation 
+    fails.
 
 0.3.0 - 2013-03-18
 
