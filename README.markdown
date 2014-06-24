@@ -14,7 +14,23 @@ Installation
 
 Authentication
 ==============
-Built-in authentication support was removed in ddp 0.7.0 due to changes in Meteor version 0.8.2. If you need authentication, try https://github.com/vsivsi/ddp-login.
+Built-in authentication support was removed in ddp 0.7.0 due to changes in Meteor version 0.8.2. 
+
+One can authenticate using plain-text logins as follows:
+
+```js
+// logging in with e-mail
+ddpclient.call("login", [
+  { user : { email : "user@domain.com" }, password : "password" }
+], function (err, result) { ... });
+
+// logging in with username
+ddpclient.call("login", [
+  { user : { username : "username" }, password : "password" }
+], function (err, result) { ... });
+```
+
+You can also use [vsivsi/ddp-login](https://github.com/vsivsi/ddp-login).
 
 
 Example
