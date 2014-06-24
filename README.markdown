@@ -31,7 +31,6 @@ var ddpclient = new DDPClient({
   /* optional: */
   auto_reconnect: true,
   auto_reconnect_timer: 500,
-  use_ejson: true,           // Use Meteor's EJSON to preserve certain data types.
   use_ssl: false,
   maintain_collections: true // Set to false to maintain your own collections.
 });
@@ -49,42 +48,13 @@ ddpclient.connect(function(error) {
 
   console.log('connected!');
 
-  /*
-   * Uncomment to log in with username/password
-   */
-  // ddpclient.loginWithUsername("username", "password", function (err, result) {
-    // result contains your auth token
-
-    setTimeout(function () {
-      /*
-       * Call a Meteor Method
-       */
-      ddpclient.call(
-        'deletePosts',             // name of Meteor Method being called
-        ['foo', 'bar'],            // parameters to send to Meteor Method
-        function (err, result) {   // callback which returns the method call results
-          console.log('called function, result: ' + result);
-        },
-        function () {              // callback which fires when server has finished
-          console.log('updated');  // sending any updated documents as a result of
-          console.log(ddpclient.collections.posts);  // calling this method
-        }
-      );
-    }, 3000);
-
+  setTimeout(function () {
     /*
-     * Call a Meteor Method while passing in a random seed.
-     * Added in DDP pre2, the random seed will be used on the server to generate
-     * repeatable IDs. This allows the same id to be generated on the client and server
+     * Call a Meteor Method
      */
-    var Random = require("ddp-random"),
-        random = Random.createWithSeeds("randomSeed");  // seed an id generator
-
-    ddpclient.callWithRandomSeed(
-      'createPost',              // name of Meteor Method being called
-      [{ _id : random.id(),      // generate the id on the client
-        body : "asdf" }],
-      "randomSeed",              // pass the same seed to the server
+    ddpclient.call(
+      'deletePosts',             // name of Meteor Method being called
+      ['foo', 'bar'],            // parameters to send to Meteor Method
       function (err, result) {   // callback which returns the method call results
         console.log('called function, result: ' + result);
       },
@@ -93,20 +63,43 @@ ddpclient.connect(function(error) {
         console.log(ddpclient.collections.posts);  // calling this method
       }
     );
+  }, 3000);
 
-    /*
-     * Subscribe to a Meteor Collection
-     */
-    ddpclient.subscribe(
-      'posts',                  // name of Meteor Publish function to subscribe to
-      [],                       // any parameters used by the Publish function
-      function () {             // callback when the subscription is complete
-        console.log('posts complete:');
-        console.log(ddpclient.collections.posts);
-      }
-    );
-  // });
+  /*
+   * Call a Meteor Method while passing in a random seed.
+   * Added in DDP pre2, the random seed will be used on the server to generate
+   * repeatable IDs. This allows the same id to be generated on the client and server
+   */
+  var Random = require("ddp-random"),
+      random = Random.createWithSeeds("randomSeed");  // seed an id generator
+
+  ddpclient.callWithRandomSeed(
+    'createPost',              // name of Meteor Method being called
+    [{ _id : random.id(),      // generate the id on the client
+      body : "asdf" }],
+    "randomSeed",              // pass the same seed to the server
+    function (err, result) {   // callback which returns the method call results
+      console.log('called function, result: ' + result);
+    },
+    function () {              // callback which fires when server has finished
+      console.log('updated');  // sending any updated documents as a result of
+      console.log(ddpclient.collections.posts);  // calling this method
+    }
+  );
+
+  /*
+   * Subscribe to a Meteor Collection
+   */
+  ddpclient.subscribe(
+    'posts',                  // name of Meteor Publish function to subscribe to
+    [],                       // any parameters used by the Publish function
+    function () {             // callback when the subscription is complete
+      console.log('posts complete:');
+      console.log(ddpclient.collections.posts);
+    }
+  );
 });
+```
 
 /*
  * Useful for debugging and learning the ddp protocol
@@ -135,7 +128,7 @@ ddpclient.on('socket-error', function(error) {
 });
 
 /*
- * If use_ejson is true, you can access the EJSON object used by ddp.
+ * You can access the EJSON object used by ddp.
  */
 var oid = new ddpclient.EJSON.ObjectID();
 ```
