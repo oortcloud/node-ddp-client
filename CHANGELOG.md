@@ -1,3 +1,11 @@
+0.7.0 - 2014-06-23
+
+  - Built-in support for authenticating to Meteor's Accounts system in has 
+    been removed, due to changes in Meteor's Accounts system in 0.8.2 
+    (https://github.com/meteor/meteor/blob/devel/History.md#meteor-accounts). 
+    If you need login support, try https://github.com/vsivsi/ddp-login
+  - EJSON support now mandatory
+
 0.6.0 - 2014-06-08
 
   - Update collection before emitting `message`. 
