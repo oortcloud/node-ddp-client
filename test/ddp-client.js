@@ -94,14 +94,6 @@ describe('EJSON', function() {
   var DDPMessage = '{"msg":"added","collection":"posts","id":"2trpvcQ4pn32ZYXco","fields":{"date":{"$date":1371591394454},"bindata":{"$binary":"QUJDRA=="}}}';
   var EJSONObject = EJSON.parse(DDPMessage);
 
-  it('should be enabled by default', function(done) {
-    var ddpclient = new DDPClient();
-
-    assert(ddpclient.use_ejson);
-
-    done();
-  });
-
   it('should expose the EJSON object', function(done) {
     var ddpclient = new DDPClient();
 
@@ -111,41 +103,8 @@ describe('EJSON', function() {
     done();
   });
 
-  it('should not be used when disabled', function(done) {
-    var ddpclient = new DDPClient({ use_ejson : false });
-
-    assert(!ddpclient.use_ejson);
-
-    ddpclient._message(DDPMessage);
-
-    // ensure received dates not decoded from EJSON
-    assert.deepEqual(ddpclient.collections.posts['2trpvcQ4pn32ZYXco'].date, {"$date":1371591394454});
-
-    // ensure received binary data not decoded from EJSON date
-    assert.deepEqual(ddpclient.collections.posts['2trpvcQ4pn32ZYXco'].bindata, {"$binary":"QUJDRA=="});
-
-    ddpclient.socket = {};
-    ddpclient.socket.send = function (opts) {
-      // ensure sent dates not encoded into EJSON
-      assert(opts.indexOf("date")          !== -1);
-      assert(opts.indexOf("$date")         === -1);
-      assert(opts.indexOf("1371591394454") === -1);
-
-      // ensure sent binary data not encoded into EJSON
-      assert(opts.indexOf("bindata")       !== -1);
-      assert(opts.indexOf("$binary")       === -1);
-      assert(opts.indexOf("QUJDRA==")      === -1);
-    };
-
-    ddpclient._send(EJSONObject.fields);
-
-    done();
-  });
-
-  it('should be used if specifically enabled', function(done) {
+  it('should decode binary and dates', function(done) {
     var ddpclient = new DDPClient({ use_ejson : true });
-
-    assert(ddpclient.use_ejson);
 
     ddpclient._message(DDPMessage);
 
