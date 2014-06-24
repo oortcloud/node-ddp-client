@@ -12,6 +12,11 @@ Installation
   npm install ddp
 ```
 
+Authentication
+==============
+Built-in authentication support was removed in ddp 0.7.0 due to changes in Meteor version 0.8.2. If you need authentication, try https://github.com/vsivsi/ddp-login.
+
+
 Example
 =======
 
