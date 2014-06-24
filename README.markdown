@@ -99,7 +99,6 @@ ddpclient.connect(function(error) {
     }
   );
 });
-```
 
 /*
  * Useful for debugging and learning the ddp protocol
