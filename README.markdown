@@ -14,7 +14,7 @@ Installation
 
 Authentication
 ==============
-Built-in authentication support was removed in ddp 0.7.0 due to changes in Meteor version 0.8.2. 
+Built-in authentication support was removed in ddp 0.7.0 due to changes in Meteor version 0.8.2.
 
 One can authenticate using plain-text logins as follows:
 
@@ -42,20 +42,22 @@ Please see the example in `examples/example.js`. Or here for reference:
 var DDPClient = require("ddp");
 
 var ddpclient = new DDPClient({
-  host: "localhost",
-  port: 3000,
-  /* optional: */
-  auto_reconnect: true,
-  auto_reconnect_timer: 500,
-  use_ssl: false,
-  maintain_collections: true // Set to false to maintain your own collections.
+  // All properties optional, defaults shown
+  host : "localhost",
+  port : 3000,
+  path : "websocket",
+  ssl  : false,
+  autoReconnect : true,
+  autoReconnectTimer : 500,
+  maintainCollections : true,
+  ddpVersion : '1'  // ['1', 'pre2', 'pre1'] available
 });
 
 /*
  * Connect to the Meteor Server
  */
 ddpclient.connect(function(error) {
-  // If auto_reconnect is true, this callback will be invoked each time
+  // If autoReconnect is true, this callback will be invoked each time
   // a server connection is re-established
   if (error) {
     console.log('DDP connection error!');
@@ -131,7 +133,7 @@ ddpclient.close();
 
 /*
  * If you need to do something specific on close or errors.
- * You can also disable auto_reconnect and
+ * You can also disable autoReconnect and
  * call ddpclient.connect() when you are ready to re-connect.
 */
 ddpclient.on('socket-close', function(code, message) {

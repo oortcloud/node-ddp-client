@@ -31,14 +31,17 @@ describe("Connect to remote server", function() {
     assert(wsConstructor.call);
     assert.deepEqual(wsConstructor.args, [['ws://localhost:3000/websocket']]);
   });
+
   it('should connect to the provided host', function() {
     new DDPClient({'host': 'myserver.com'}).connect();
     assert.deepEqual(wsConstructor.args, [['ws://myserver.com:3000/websocket']]);
   });
+
   it('should connect to the provided host and port', function() {
     new DDPClient({'host': 'myserver.com', 'port': 42}).connect();
     assert.deepEqual(wsConstructor.args, [['ws://myserver.com:42/websocket']]);
   });
+
   it('should use ssl if the port is 443', function() {
     new DDPClient({'host': 'myserver.com', 'port': 443}).connect();
     assert.deepEqual(wsConstructor.args, [['wss://myserver.com:443/websocket']]);
@@ -51,11 +54,11 @@ describe('Automatic reconnection', function() {
     prepareMocks();
   });
 
-  /* We should be able to get this test to work with clock.tick() but for some weird 
+  /* We should be able to get this test to work with clock.tick() but for some weird
      reasons it does not work. See: https://github.com/cjohansen/Sinon.JS/issues/283
    */
   it('should reconnect when the connection fails', function(done) {
-    var ddpclient = new DDPClient({ auto_reconnect_timer: 10 });
+    var ddpclient = new DDPClient({ autoReconnectTimer: 10 });
 
     ddpclient.connect();
     wsMock.emit('close', {});
@@ -71,7 +74,7 @@ describe('Automatic reconnection', function() {
   });
 
   it('should reconnect only once when the connection fails rapidly', function(done) {
-    var ddpclient = new DDPClient({ auto_reconnect_timer: 5 });
+    var ddpclient = new DDPClient({ autoReconnectTimer: 5 });
 
     ddpclient.connect();
     wsMock.emit('close', {});
@@ -144,15 +147,15 @@ describe('Collection maintenance', function() {
     assert.equal(ddpclient.collections.posts['2trpvcQ4pn32ZYXco'].text, "A cat was here");
   });
 
-  it('should maintain collections if maintain_collections is true', function() {
-    var ddpclient = new DDPClient({ maintain_collections : true });
+  it('should maintain collections if maintainCollections is true', function() {
+    var ddpclient = new DDPClient({ maintainCollections : true });
     ddpclient._message(addedMessage);
     // ensure collections exist and are populated by add messages
     assert.equal(ddpclient.collections.posts['2trpvcQ4pn32ZYXco'].text, "A cat was here");
   });
 
-  it('should not maintain collections if maintain_collections is false', function() {
-    var ddpclient = new DDPClient({ maintain_collections : false });
+  it('should not maintain collections if maintainCollections is false', function() {
+    var ddpclient = new DDPClient({ maintainCollections : false });
     ddpclient._message(addedMessage);
     // ensure there are no collections
     assert(!ddpclient.collections);
