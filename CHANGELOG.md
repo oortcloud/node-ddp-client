@@ -1,14 +1,20 @@
+0.8.0 - 2014-09-16
+
+  - Bump DDP version to 1
+  - Fix connect callback handler (#41)
+  - Change underscored_variable_names to camelCase
+
 0.7.0 - 2014-06-23
 
-  - Built-in support for authenticating to Meteor's Accounts system in has 
-    been removed, due to changes in Meteor's Accounts system in 0.8.2 
-    (https://github.com/meteor/meteor/blob/devel/History.md#meteor-accounts). 
+  - Built-in support for authenticating to Meteor's Accounts system in has
+    been removed, due to changes in Meteor's Accounts system in 0.8.2
+    (https://github.com/meteor/meteor/blob/devel/History.md#meteor-accounts).
     If you need login support, try https://github.com/vsivsi/ddp-login
   - EJSON support now mandatory
 
 0.6.0 - 2014-06-08
 
-  - Update collection before emitting `message`. 
+  - Update collection before emitting `message`.
 
 0.5.2 - 2014-06-01
 
@@ -20,11 +26,11 @@
 
 0.5.0 - 2014-05-14
 
-  - Use ddp-ejson instead of meteor-ejson. ddp-ejson is a repackage of 
+  - Use ddp-ejson instead of meteor-ejson. ddp-ejson is a repackage of
     Meteor's latest EJSON package
-  - Use ddp-srp insead of node-srp. ddp-srp is a repackage of Meteor's 
+  - Use ddp-srp insead of node-srp. ddp-srp is a repackage of Meteor's
     latest SRP package
-  - Added second callback to ddpclient.call, executed when the DDP 
+  - Added second callback to ddpclient.call, executed when the DDP
     `updated` message is received
   - Allow automatic EJSON serialization/deserialization of ObjectIDs
   - Expose EJSON package to allow for addition of custom EJSON types
@@ -43,15 +49,15 @@
 
 0.4.4 - 2014-02-09
 
-  - Fix a bug where if the server responded to an error on the first 
-    step of SRP authentication it was not handled correctly (i.e when 
+  - Fix a bug where if the server responded to an error on the first
+    step of SRP authentication it was not handled correctly (i.e when
     the user is not found)
 
 0.4.3 - 2013-12-19
 
-  - Fix bug with socket reconnects tailspinning into an infinite loop 
+  - Fix bug with socket reconnects tailspinning into an infinite loop
     (#30 by @jagill)
-  - Fix bug when use_ejson was not always set properly by default. 
+  - Fix bug when use_ejson was not always set properly by default.
     (#29 by @jagill)
 
 0.4.2 - 2013-12-14
@@ -68,7 +74,7 @@
 
 0.3.6 - 2013-11-07
 
-  - fixed bug with default params when ignoring root certs (in case the 
+  - fixed bug with default params when ignoring root certs (in case the
     machine doesn't have the cert)
   - Added DDP login with SRP authentication
 
@@ -82,7 +88,7 @@
 
 0.3.3 - 2013-05-29
 
- - fixed bug where an exception could be thrown when sending a message on 
+ - fixed bug where an exception could be thrown when sending a message on
    a socket that is not opened anymore (issue #18)
  - added some tests (work in progress)
 
@@ -92,7 +98,7 @@
 
 0.3.1 - 2013-04-06
 
-  - added a failed message to the connect callback if version negotiation 
+  - added a failed message to the connect callback if version negotiation
     fails.
 
 0.3.0 - 2013-03-18

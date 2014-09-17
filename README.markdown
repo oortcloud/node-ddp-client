@@ -3,7 +3,7 @@ Node DDP Client
 
 A callback style [DDP](https://github.com/meteor/meteor/blob/devel/packages/livedata/DDP.md) ([Meteor](http://meteor.com/)'s Distributed Data Protocol) node client, originally based alansikora's [node-js_ddp-client](https://github.com/alansikora/node-js_ddp-client) and Meteor's python client. Uses a more callback style approach.
 
-The client implements the pre1 and pre2 versions of DDP.
+The client implements version 1 of DDP, as well as fallbacks to pre1 and pre2.
 
 Installation
 ============
