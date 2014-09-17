@@ -1,4 +1,4 @@
-var DDPClient = require("ddp");
+var DDPClient = require("../lib/ddp-client");
 
 var ddpclient = new DDPClient({
   // All properties optional, defaults shown
