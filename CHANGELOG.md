@@ -1,3 +1,11 @@
+0.8.2 - 2014-10-11
+
+  - Fixed variable name typo
+
+0.8.1 - 2014-09-16
+
+  - Remove debug console.logs
+
 0.8.0 - 2014-09-16
 
   - Bump DDP version to 1
