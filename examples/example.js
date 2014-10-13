@@ -75,4 +75,20 @@ ddpclient.connect(function(error) {
       console.log(ddpclient.collections.posts);
     }
   );
+
+  /*
+   * Observe a collection.
+   */
+  var observer = ddpclient.observe('posts');
+  observer.added = function(id) {
+    console.log("[ADDED] to " + observer.name + ":  " + id);
+  };
+  observer.changed = function(id) {
+    console.log("[CHANGED] in " + observer.name + ":  " + id);
+  };
+  observer.removed = function(id, oldValue) {
+    console.log("[REMOVED] in " + observer.name + ":  " + id);
+  };
+
+  setTimeout(function() { observer.stop() }, 6000);
 });

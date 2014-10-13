@@ -9,7 +9,8 @@
     "Mike Bannister <notimpossiblemike@gmail.com> (http://po.ssibiliti.es)",
     "Chris Mather <mather.chris@gmail.com> (http://eventedmind.com)",
     "Tarang Patel",
-    "Vaughn Iverson <vsivsi@yahoo.com>"
+    "Vaughn Iverson <vsivsi@yahoo.com>",
+    "Rony Kubat <rony@kubat.org>"
   ],
   "license": "MIT/X11",
   "main": "lib/ddp-client",
