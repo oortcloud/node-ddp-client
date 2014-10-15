@@ -1,3 +1,7 @@
+0.8.3 - 2014-10-15
+
+  - Added collection observation
+
 0.8.2 - 2014-10-11
 
   - Fixed variable name typo
