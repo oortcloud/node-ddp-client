@@ -134,17 +134,22 @@ describe('EJSON', function() {
 });
 
 
-describe('Collection maintenance', function() {
+describe('Collection maintenance and observation', function() {
   var addedMessage    = '{"msg":"added","collection":"posts","id":"2trpvcQ4pn32ZYXco","fields":{"text":"A cat was here","value":true}}';
   var changedMessage  = '{"msg":"changed","collection":"posts","id":"2trpvcQ4pn32ZYXco","fields":{"text":"A dog was here"}}';
   var changedMessage2 = '{"msg":"changed","collection":"posts","id":"2trpvcQ4pn32ZYXco","cleared":["value"]}';
   var removedMessage  = '{"msg":"removed","collection":"posts","id":"2trpvcQ4pn32ZYXco"}';
+  var observer;
 
   it('should maintain collections by default', function() {
-    var ddpclient = new DDPClient();
+    var ddpclient = new DDPClient(), observed = false;
+    observer = ddpclient.observe("posts");
+    observer.added = function(id) { if (id === '2trpvcQ4pn32ZYXco') observed = true; }
+
     ddpclient._message(addedMessage);
     // ensure collections exist and are populated by add messages
     assert.equal(ddpclient.collections.posts['2trpvcQ4pn32ZYXco'].text, "A cat was here");
+    assert(observed, "addition observed");
   });
 
   it('should maintain collections if maintainCollections is true', function() {
@@ -169,26 +174,48 @@ describe('Collection maintenance', function() {
   });
 
   it('should response to "changed" messages', function() {
-    var ddpclient = new DDPClient();
+    var ddpclient = new DDPClient(), observed = false;
+    observer = ddpclient.observe("posts");
+    observer.changed = function(id, oldFields, clearedFields) {
+      if (id === "2trpvcQ4pn32ZYXco" && oldFields.text === "A cat was here") {
+        observed = true;
+      }
+    };
+
     ddpclient._message(addedMessage);
     ddpclient._message(changedMessage);
     assert.equal(ddpclient.collections.posts['2trpvcQ4pn32ZYXco'].text, "A dog was here");
     assert.equal(ddpclient.collections.posts['2trpvcQ4pn32ZYXco'].value, true);
+    assert(observed, "field change observed");
   });
 
   it('should response to "changed" messages with "cleared"', function() {
-    var ddpclient = new DDPClient();
+    var ddpclient = new DDPClient(), observed = false;
+    observer = ddpclient.observe("posts");
+    observer.changed = function(id, oldFields, clearedFields) {
+      if (id === "2trpvcQ4pn32ZYXco" && clearedFields.length === 1 && clearedFields[0] === "value") {
+        observed = true;
+      }
+    };
+
     ddpclient._message(addedMessage);
     ddpclient._message(changedMessage);
     ddpclient._message(changedMessage2);
     assert.equal(ddpclient.collections.posts['2trpvcQ4pn32ZYXco'].text, "A dog was here");
     assert(!ddpclient.collections.posts['2trpvcQ4pn32ZYXco'].hasOwnProperty('value'));
+    assert(observed, "cleared change observed")
   });
 
   it('should response to "removed" messages', function() {
-    var ddpclient = new DDPClient();
+    var ddpclient = new DDPClient(), oldval;
+    observer = ddpclient.observe("posts");
+    observer.removed = function(id, oldValue) { oldval = oldValue; console.log("FOO: ", oldValue)};
+
     ddpclient._message(addedMessage);
     ddpclient._message(removedMessage);
     assert(!ddpclient.collections.posts.hasOwnProperty('2trpvcQ4pn32ZYXco'));
+    assert(oldval, "Removal observed");
+    assert.equal(oldval.text, "A cat was here");
+    assert.equal(oldval.value, true);
   });
 });

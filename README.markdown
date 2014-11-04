@@ -56,12 +56,16 @@ var ddpclient = new DDPClient({
 /*
  * Connect to the Meteor Server
  */
-ddpclient.connect(function(error) {
+ddpclient.connect(function(error, wasReconnect) {
   // If autoReconnect is true, this callback will be invoked each time
   // a server connection is re-established
   if (error) {
     console.log('DDP connection error!');
     return;
+  }
+
+  if (wasReconnect) {
+    console.log('Reestablishment of a connection.');
   }
 
   console.log('connected!');
@@ -120,17 +124,19 @@ ddpclient.connect(function(error) {
   /*
    * Observe a collection.
    */
-  var observer = ddpclient.observe('posts');
+  var observer = ddpclient.observe("posts");
   observer.added = function(id) {
     console.log("[ADDED] to " + observer.name + ":  " + id);
   };
-  observer.changed = function(id) {
+  observer.changed = function(id, oldFields, clearedFields) {
     console.log("[CHANGED] in " + observer.name + ":  " + id);
+    console.log("[CHANGED] old field values: ", oldFields);
+    console.log("[CHANGED] cleared fields: ", clearedFields);
   };
   observer.removed = function(id, oldValue) {
     console.log("[REMOVED] in " + observer.name + ":  " + id);
+    console.log("[REMOVED] previous value: ", oldValue);
   };
-
   setTimeout(function() { observer.stop() }, 6000);
 });
 
