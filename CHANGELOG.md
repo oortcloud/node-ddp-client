@@ -1,4 +1,4 @@
-0.8.3 - 2014-10-15
+0.9.0 - 2014-11-05
 
   - Added collection observation
 

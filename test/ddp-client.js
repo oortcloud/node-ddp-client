@@ -209,7 +209,7 @@ describe('Collection maintenance and observation', function() {
   it('should response to "removed" messages', function() {
     var ddpclient = new DDPClient(), oldval;
     observer = ddpclient.observe("posts");
-    observer.removed = function(id, oldValue) { oldval = oldValue; console.log("FOO: ", oldValue)};
+    observer.removed = function(id, oldValue) { oldval = oldValue; /* console.log("FOO: ", oldValue) */ };
 
     ddpclient._message(addedMessage);
     ddpclient._message(removedMessage);
