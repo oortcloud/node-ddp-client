@@ -169,6 +169,7 @@ describe('Collection maintenance and observation', function() {
   it('should response to "added" messages', function() {
     var ddpclient = new DDPClient();
     ddpclient._message(addedMessage);
+    assert.equal(ddpclient.collections.posts['2trpvcQ4pn32ZYXco']._id, "2trpvcQ4pn32ZYXco");
     assert.equal(ddpclient.collections.posts['2trpvcQ4pn32ZYXco'].text, "A cat was here");
     assert.equal(ddpclient.collections.posts['2trpvcQ4pn32ZYXco'].value, true);
   });
@@ -209,7 +210,7 @@ describe('Collection maintenance and observation', function() {
   it('should response to "removed" messages', function() {
     var ddpclient = new DDPClient(), oldval;
     observer = ddpclient.observe("posts");
-    observer.removed = function(id, oldValue) { oldval = oldValue; /* console.log("FOO: ", oldValue) */ };
+    observer.removed = function(id, oldValue) { oldval = oldValue; };
 
     ddpclient._message(addedMessage);
     ddpclient._message(removedMessage);
