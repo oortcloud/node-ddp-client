@@ -1,3 +1,7 @@
+0.9.1 - 2014-11-11
+
+  - Collection elements now have _id field.
+
 0.9.0 - 2014-11-05
 
   - Added collection observation
