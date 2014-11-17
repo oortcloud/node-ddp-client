@@ -177,8 +177,10 @@ describe('Collection maintenance and observation', function() {
   it('should response to "changed" messages', function() {
     var ddpclient = new DDPClient(), observed = false;
     observer = ddpclient.observe("posts");
-    observer.changed = function(id, oldFields, clearedFields) {
-      if (id === "2trpvcQ4pn32ZYXco" && oldFields.text === "A cat was here") {
+    observer.changed = function(id, oldFields, clearedFields, newFields) {
+      if (id === "2trpvcQ4pn32ZYXco"
+        && oldFields.text === "A cat was here"
+        && newFields.text === "A dog was here") {
         observed = true;
       }
     };
