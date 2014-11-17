@@ -128,10 +128,11 @@ ddpclient.connect(function(error, wasReconnect) {
   observer.added = function(id) {
     console.log("[ADDED] to " + observer.name + ":  " + id);
   };
-  observer.changed = function(id, oldFields, clearedFields) {
+  observer.changed = function(id, oldFields, clearedFields, newFields) {
     console.log("[CHANGED] in " + observer.name + ":  " + id);
     console.log("[CHANGED] old field values: ", oldFields);
     console.log("[CHANGED] cleared fields: ", clearedFields);
+    console.log("[CHANGED] new fields: ", newFields);
   };
   observer.removed = function(id, oldValue) {
     console.log("[REMOVED] in " + observer.name + ":  " + id);
