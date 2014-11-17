@@ -1,3 +1,7 @@
+0.9.2 - 2014-11-17
+
+  - Observer callback emits changed fields.
+
 0.9.1 - 2014-11-11
 
   - Collection elements now have _id field.
