@@ -11,6 +11,7 @@ var wsConstructor, wsMock;
 
 function prepareMocks() {
   wsMock = new events.EventEmitter();
+  wsMock.close = sinon.stub();
 
   wsConstructor = sinon.stub();
   wsConstructor.returns(wsMock);
@@ -90,6 +91,21 @@ describe('Automatic reconnection', function() {
       done();
     }, 15);
   });
+
+  it('should clear event listeners on close', function(done) {
+    var ddpclient = new DDPClient();
+    var callback = sinon.stub();
+
+    ddpclient.connect(callback);
+    ddpclient.close();
+    ddpclient.connect(callback);
+
+    setTimeout(function() {
+      assert.equal(ddpclient.listeners('connected').length, 1);
+      assert.equal(ddpclient.listeners('failed').length, 1);
+      done();
+    }, 15);
+  })
 });
 
 
