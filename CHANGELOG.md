@@ -1,3 +1,7 @@
+0.9.3 - 2014-12-20
+
+  - Remove event listeners on close
+
 0.9.2 - 2014-11-17
 
   - Observer callback emits changed fields.
