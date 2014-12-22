@@ -47,6 +47,49 @@ describe("Connect to remote server", function() {
     new DDPClient({'host': 'myserver.com', 'port': 443}).connect();
     assert.deepEqual(wsConstructor.args, [['wss://myserver.com:443/websocket']]);
   });
+
+  it('should clear event listeners on close', function(done) {
+    var ddpclient = new DDPClient();
+    var callback = sinon.stub();
+
+    ddpclient.connect(callback);
+    ddpclient.close();
+    ddpclient.connect(callback);
+
+    setTimeout(function() {
+      assert.equal(ddpclient.listeners('connected').length, 1);
+      assert.equal(ddpclient.listeners('failed').length, 1);
+      done();
+    }, 15);
+  });
+
+  it('should call the connection callback when connection is established', function(done) {
+    var ddpclient = new DDPClient();
+    var callback = sinon.spy();
+
+    ddpclient.connect(callback);
+    wsMock.emit('message', { data: '{ "msg": "connected" }' });
+
+    setTimeout(function() {
+      assert(callback.calledWith(undefined, false));
+      done();
+    }, 15);
+  });
+
+  it('should pass socket errors occurring during connection to the connection callback', function(done) {
+    var ddpclient = new DDPClient();
+    var callback = sinon.spy();
+
+    var socketError = "Network error: ws://localhost:3000/websocket: connect ECONNREFUSED";
+
+    ddpclient.connect(callback);
+    wsMock.emit('error', { message: socketError });
+
+    setTimeout(function() {
+      assert(callback.calledWith(socketError, false));
+      done();
+    }, 15);
+  });
 });
 
 
@@ -91,21 +134,6 @@ describe('Automatic reconnection', function() {
       done();
     }, 15);
   });
-
-  it('should clear event listeners on close', function(done) {
-    var ddpclient = new DDPClient();
-    var callback = sinon.stub();
-
-    ddpclient.connect(callback);
-    ddpclient.close();
-    ddpclient.connect(callback);
-
-    setTimeout(function() {
-      assert.equal(ddpclient.listeners('connected').length, 1);
-      assert.equal(ddpclient.listeners('failed').length, 1);
-      done();
-    }, 15);
-  })
 });
 
 
