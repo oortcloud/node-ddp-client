@@ -34,17 +34,17 @@ describe("Connect to remote server", function() {
   });
 
   it('should connect to the provided host', function() {
-    new DDPClient({'host': 'myserver.com',}).connect();
+    new DDPClient({'host': 'myserver.com'}).connect();
     assert.deepEqual(wsConstructor.args, [['ws://myserver.com:3000/websocket']]);
   });
 
   it('should connect to the provided host and port', function() {
-    new DDPClient({'host': 'myserver.com', 'port': 42,}).connect();
+    new DDPClient({'host': 'myserver.com', 'port': 42}).connect();
     assert.deepEqual(wsConstructor.args, [['ws://myserver.com:42/websocket']]);
   });
 
   it('should use ssl if the port is 443', function() {
-    new DDPClient({'host': 'myserver.com', 'port': 443,}).connect();
+    new DDPClient({'host': 'myserver.com', 'port': 443}).connect();
     assert.deepEqual(wsConstructor.args, [['wss://myserver.com:443/websocket']]);
   });
 
@@ -102,7 +102,7 @@ describe('Automatic reconnection', function() {
      reasons it does not work. See: https://github.com/cjohansen/Sinon.JS/issues/283
    */
   it('should reconnect when the connection fails', function(done) {
-    var ddpclient = new DDPClient({ autoReconnectTimer: 10,});
+    var ddpclient = new DDPClient({ autoReconnectTimer: 10 });
 
     ddpclient.connect();
     wsMock.emit('close', {});
@@ -118,7 +118,7 @@ describe('Automatic reconnection', function() {
   });
 
   it('should reconnect only once when the connection fails rapidly', function(done) {
-    var ddpclient = new DDPClient({ autoReconnectTimer: 5,});
+    var ddpclient = new DDPClient({ autoReconnectTimer: 5 });
 
     ddpclient.connect();
     wsMock.emit('close', {});
