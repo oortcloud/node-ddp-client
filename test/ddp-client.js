@@ -25,7 +25,7 @@ describe("Connect to remote server", function() {
   });
 
   it('should connect to localhost by default', function() {
-    new DDPClient({ path: "websocket" }).connect();
+    new DDPClient().connect();
 
     assert(wsConstructor.calledOnce);
     assert(wsConstructor.calledWithNew());
@@ -34,22 +34,22 @@ describe("Connect to remote server", function() {
   });
 
   it('should connect to the provided host', function() {
-    new DDPClient({'host': 'myserver.com', path: "websocket" }).connect();
+    new DDPClient({'host': 'myserver.com',}).connect();
     assert.deepEqual(wsConstructor.args, [['ws://myserver.com:3000/websocket']]);
   });
 
   it('should connect to the provided host and port', function() {
-    new DDPClient({'host': 'myserver.com', 'port': 42, path: "websocket" }).connect();
+    new DDPClient({'host': 'myserver.com', 'port': 42,}).connect();
     assert.deepEqual(wsConstructor.args, [['ws://myserver.com:42/websocket']]);
   });
 
   it('should use ssl if the port is 443', function() {
-    new DDPClient({'host': 'myserver.com', 'port': 443, path: "websocket" }).connect();
+    new DDPClient({'host': 'myserver.com', 'port': 443,}).connect();
     assert.deepEqual(wsConstructor.args, [['wss://myserver.com:443/websocket']]);
   });
 
   it('should clear event listeners on close', function(done) {
-    var ddpclient = new DDPClient({ path: "websocket" });
+    var ddpclient = new DDPClient();
     var callback = sinon.stub();
 
     ddpclient.connect(callback);
@@ -64,7 +64,7 @@ describe("Connect to remote server", function() {
   });
 
   it('should call the connection callback when connection is established', function(done) {
-    var ddpclient = new DDPClient({ path: "websocket" });
+    var ddpclient = new DDPClient();
     var callback = sinon.spy();
 
     ddpclient.connect(callback);
@@ -77,7 +77,7 @@ describe("Connect to remote server", function() {
   });
 
   it('should pass socket errors occurring during connection to the connection callback', function(done) {
-    var ddpclient = new DDPClient({ path: "websocket" });
+    var ddpclient = new DDPClient();
     var callback = sinon.spy();
 
     var socketError = "Network error: ws://localhost:3000/websocket: connect ECONNREFUSED";
@@ -102,7 +102,7 @@ describe('Automatic reconnection', function() {
      reasons it does not work. See: https://github.com/cjohansen/Sinon.JS/issues/283
    */
   it('should reconnect when the connection fails', function(done) {
-    var ddpclient = new DDPClient({ autoReconnectTimer: 10, path: "websocket" });
+    var ddpclient = new DDPClient({ autoReconnectTimer: 10,});
 
     ddpclient.connect();
     wsMock.emit('close', {});
@@ -118,7 +118,7 @@ describe('Automatic reconnection', function() {
   });
 
   it('should reconnect only once when the connection fails rapidly', function(done) {
-    var ddpclient = new DDPClient({ autoReconnectTimer: 5, path: "websocket" });
+    var ddpclient = new DDPClient({ autoReconnectTimer: 5,});
 
     ddpclient.connect();
     wsMock.emit('close', {});
@@ -269,16 +269,16 @@ describe('Collection maintenance and observation', function() {
 
 
 describe("SockJS", function() {
-  it("should use direct WS coneection if there is a path", function() {
-    var ddpclient = new DDPClient({ path: "websocket" });
+  it("should use direct WS connection if there is a path", function() {
+    var ddpclient = new DDPClient();
     ddpclient._makeWebSocketConnection = sinon.stub();
     ddpclient.connect();
 
     assert.ok(ddpclient._makeWebSocketConnection.called);
   });
 
-  it("should fallback to sockjs if there is no path", function() {
-    var ddpclient = new DDPClient();
+  it("should fallback to sockjs if there useSockJS option", function() {
+    var ddpclient = new DDPClient({ useSockJs: true });
     ddpclient._makeSockJSConnection = sinon.stub();
     ddpclient.connect();
 
@@ -297,6 +297,23 @@ describe("SockJS", function() {
         var opts = {
           host: "the-host",
           port: 9000
+        };
+        var ddpclient = new DDPClient(opts);
+        ddpclient._makeSockJSConnection();
+      });
+    });
+
+    it("should support custom paths", function(done) {
+      var get = function(url, callback) {
+        assert.equal(url, "http://the-host:9000/search/sockjs/info");
+        done();
+      };
+
+      WithRequestGet(get, function() {
+        var opts = {
+          host: "the-host",
+          port: 9000,
+          path: "search"
         };
         var ddpclient = new DDPClient(opts);
         ddpclient._makeSockJSConnection();
