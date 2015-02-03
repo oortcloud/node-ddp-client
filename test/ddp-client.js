@@ -25,7 +25,7 @@ describe("Connect to remote server", function() {
   });
 
   it('should connect to localhost by default', function() {
-    new DDPClient().connect();
+    new DDPClient({ path: "websocket" }).connect();
 
     assert(wsConstructor.calledOnce);
     assert(wsConstructor.calledWithNew());
@@ -34,22 +34,22 @@ describe("Connect to remote server", function() {
   });
 
   it('should connect to the provided host', function() {
-    new DDPClient({'host': 'myserver.com'}).connect();
+    new DDPClient({'host': 'myserver.com', path: "websocket" }).connect();
     assert.deepEqual(wsConstructor.args, [['ws://myserver.com:3000/websocket']]);
   });
 
   it('should connect to the provided host and port', function() {
-    new DDPClient({'host': 'myserver.com', 'port': 42}).connect();
+    new DDPClient({'host': 'myserver.com', 'port': 42, path: "websocket" }).connect();
     assert.deepEqual(wsConstructor.args, [['ws://myserver.com:42/websocket']]);
   });
 
   it('should use ssl if the port is 443', function() {
-    new DDPClient({'host': 'myserver.com', 'port': 443}).connect();
+    new DDPClient({'host': 'myserver.com', 'port': 443, path: "websocket" }).connect();
     assert.deepEqual(wsConstructor.args, [['wss://myserver.com:443/websocket']]);
   });
 
   it('should clear event listeners on close', function(done) {
-    var ddpclient = new DDPClient();
+    var ddpclient = new DDPClient({ path: "websocket" });
     var callback = sinon.stub();
 
     ddpclient.connect(callback);
@@ -64,7 +64,7 @@ describe("Connect to remote server", function() {
   });
 
   it('should call the connection callback when connection is established', function(done) {
-    var ddpclient = new DDPClient();
+    var ddpclient = new DDPClient({ path: "websocket" });
     var callback = sinon.spy();
 
     ddpclient.connect(callback);
@@ -77,7 +77,7 @@ describe("Connect to remote server", function() {
   });
 
   it('should pass socket errors occurring during connection to the connection callback', function(done) {
-    var ddpclient = new DDPClient();
+    var ddpclient = new DDPClient({ path: "websocket" });
     var callback = sinon.spy();
 
     var socketError = "Network error: ws://localhost:3000/websocket: connect ECONNREFUSED";
@@ -102,7 +102,7 @@ describe('Automatic reconnection', function() {
      reasons it does not work. See: https://github.com/cjohansen/Sinon.JS/issues/283
    */
   it('should reconnect when the connection fails', function(done) {
-    var ddpclient = new DDPClient({ autoReconnectTimer: 10 });
+    var ddpclient = new DDPClient({ autoReconnectTimer: 10, path: "websocket" });
 
     ddpclient.connect();
     wsMock.emit('close', {});
@@ -118,7 +118,7 @@ describe('Automatic reconnection', function() {
   });
 
   it('should reconnect only once when the connection fails rapidly', function(done) {
-    var ddpclient = new DDPClient({ autoReconnectTimer: 5 });
+    var ddpclient = new DDPClient({ autoReconnectTimer: 5, path: "websocket" });
 
     ddpclient.connect();
     wsMock.emit('close', {});
@@ -266,3 +266,129 @@ describe('Collection maintenance and observation', function() {
     assert.equal(oldval.value, true);
   });
 });
+
+
+describe("SockJS", function() {
+  it("should use direct WS coneection if there is a path", function() {
+    var ddpclient = new DDPClient({ path: "websocket" });
+    ddpclient._makeWebSocketConnection = sinon.stub();
+    ddpclient.connect();
+
+    assert.ok(ddpclient._makeWebSocketConnection.called);
+  });
+
+  it("should fallback to sockjs if there is no path", function() {
+    var ddpclient = new DDPClient();
+    ddpclient._makeSockJSConnection = sinon.stub();
+    ddpclient.connect();
+
+    assert.ok(ddpclient._makeSockJSConnection.called);
+  });
+
+  describe("after info hit", function() {
+    var request = require("request");
+    it("should connect to the correct url", function(done) {
+      var get = function(url, callback) {
+        assert.equal(url, "http://the-host:9000/sockjs/info");
+        done();
+      };
+
+      WithRequestGet(get, function() {
+        var opts = {
+          host: "the-host",
+          port: 9000
+        };
+        var ddpclient = new DDPClient(opts);
+        ddpclient._makeSockJSConnection();
+      });
+    });
+
+    it("should retry if there is an error", function() {
+      var error = { message: "error" };
+      var get = function(url, callback) {
+        callback(error);
+      };
+
+      WithRequestGet(get, function() {
+        var ddpclient = new DDPClient();
+        ddpclient._recoverNetworkError = sinon.stub();
+        ddpclient._makeSockJSConnection();
+        assert.ok(ddpclient._recoverNetworkError.called);
+      });
+    });
+
+    it("should use direct WS if there is no body", function() {
+      var info = null;
+      var get = function(url, callback) {
+        callback(null, null, info);
+      };
+
+      WithRequestGet(get, function() {
+        var ddpclient = new DDPClient();
+        ddpclient._makeWebSocketConnection = sinon.stub();
+        ddpclient._makeSockJSConnection();
+
+        var wsUrl = "ws://localhost:3000/websocket";
+        assert.ok(ddpclient._makeWebSocketConnection.calledWith(wsUrl));
+      });
+    });
+
+    it("should use direct WS if there is no base_url", function() {
+      var info = '{}';
+      var get = function(url, callback) {
+        callback(null, null, info);
+      };
+
+      WithRequestGet(get, function() {
+        var ddpclient = new DDPClient();
+        ddpclient._makeWebSocketConnection = sinon.stub();
+        ddpclient._makeSockJSConnection();
+
+        var wsUrl = "ws://localhost:3000/websocket";
+        assert.ok(ddpclient._makeWebSocketConnection.calledWith(wsUrl));
+      });
+    });
+
+    it("should use full base url if it's starts with http", function() {
+      var info = '{"base_url": "https://somepath"}';
+      var get = function(url, callback) {
+        callback(null, null, info);
+      };
+
+      WithRequestGet(get, function() {
+        var ddpclient = new DDPClient();
+        ddpclient._makeWebSocketConnection = sinon.stub();
+        ddpclient._makeSockJSConnection();
+
+        var wsUrl = "wss://somepath/websocket";
+        assert.ok(ddpclient._makeWebSocketConnection.calledWith(wsUrl));
+      });
+    });
+
+    it("should compute url based on the base_url if it's not starts with http", function() {
+      var info = '{"base_url": "/somepath"}';
+      var get = function(url, callback) {
+        callback(null, null, info);
+      };
+
+      WithRequestGet(get, function() {
+        var ddpclient = new DDPClient();
+        ddpclient._makeWebSocketConnection = sinon.stub();
+        ddpclient._makeSockJSConnection();
+
+        var wsUrl = "ws://localhost:3000/somepath/websocket";
+        assert.ok(ddpclient._makeWebSocketConnection.calledWith(wsUrl));
+      });
+    });
+  });
+});
+
+function WithRequestGet(getFn, fn) {
+  var request = require("request");
+  var originalGet = request.get;
+  request.get = getFn;
+
+  fn();
+
+  request.get = originalGet;
+}
