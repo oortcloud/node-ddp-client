@@ -45,12 +45,17 @@ var ddpclient = new DDPClient({
   // All properties optional, defaults shown
   host : "localhost",
   port : 3000,
-  path : "websocket",
   ssl  : false,
   autoReconnect : true,
   autoReconnectTimer : 500,
   maintainCollections : true,
-  ddpVersion : '1'  // ['1', 'pre2', 'pre1'] available
+  ddpVersion : '1',  // ['1', 'pre2', 'pre1'] available
+  // uses the SockJs protocol to create the connection
+  // this still uses websockets, but allows to get the benefits
+  // from projects like meteorhacks:cluster
+  // (for load balancing and service discovery)
+  // do not use `path` option when you are using useSockJs
+  useSockJs: true
 });
 
 /*
@@ -172,6 +177,22 @@ ddpclient.on('socket-error', function(error) {
  */
 var oid = new ddpclient.EJSON.ObjectID();
 ```
+
+SockJS Mode
+===============
+
+By using the `useSockJs` option like below, DDP connection will use [SockJs](https://github.com/sockjs) protocol to establish the WebSocket connection.
+
+```js
+var ddpClient = new DDPClient({ useSockJs: true });
+```
+
+Meteor server uses SockJs to implement it's DDP server. With this mode, we can get the benefits provided by [meteorhacks:cluster](https://github.com/meteorhacks/cluster). Some of those are load balancing and service discovery.
+
+* For load balancing you don't need to anything.
+* For service discovery, just use the `path` option to identify the service you are referring to.
+
+> With this mode, `path` option has a special meaning. So, thing twice before using `path` option when you are using this option.
 
 Unimplemented Features
 ====

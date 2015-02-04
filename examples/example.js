@@ -6,12 +6,17 @@ var ddpclient = new DDPClient({
   // All properties optional, defaults shown
   host : "localhost",
   port : 3000,
-  path : "websocket",
   ssl  : false,
   autoReconnect : true,
   autoReconnectTimer : 500,
   maintainCollections : true,
-  ddpVersion : "1"  // ["1", "pre2", "pre1"] available
+  ddpVersion : "1",  // ["1", "pre2", "pre1"] available,
+  // uses the sockJs protocol to create the connection
+  // this still uses websockets, but allows to get the benefits
+  // from projects like meteorhacks:cluster
+  // (load balancing and service discovery)
+  // do not use `path` option when you are using useSockJs
+  useSockJs: true
 });
 
 /*
