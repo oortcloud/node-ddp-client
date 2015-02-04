@@ -1,3 +1,7 @@
+0.10.0 - 2015-02-03
+
+  - Add optional SockJS support
+
 0.9.4 - 2014-12-22
 
   - Handle socket errors occurring before connection is established
