@@ -47,7 +47,16 @@ describe("Connect to remote server", function() {
     new DDPClient({'host': 'myserver.com', 'port': 443}).connect();
     assert.deepEqual(wsConstructor.args, [['wss://myserver.com:443/websocket']]);
   });
-
+  it('should connect to the provided url', function() {
+    new DDPClient({'url': 'wss://myserver.com/websocket'}).connect();
+    assert.deepEqual(wsConstructor.args, [['wss://myserver.com/websocket']]);
+  });
+  it('should fallback to sockjs if url and useSockJs:true are provided', function() {
+    var ddpclient = new DDPClient({'url': 'wss://myserver.com/websocket', 'useSockJs': true});
+    ddpclient._makeSockJSConnection = sinon.stub();
+    ddpclient.connect();
+    assert.ok(ddpclient._makeSockJSConnection.called);
+  });
   it('should clear event listeners on close', function(done) {
     var ddpclient = new DDPClient();
     var callback = sinon.stub();
