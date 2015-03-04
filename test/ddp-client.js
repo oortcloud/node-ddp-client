@@ -134,6 +134,68 @@ describe('Automatic reconnection', function() {
       done();
     }, 15);
   });
+
+  it('should save currently running method calls', function() {
+    var ddpclient = new DDPClient();
+    ddpclient._getNextId = sinon.stub().returns('_test');
+    ddpclient._send = Function.prototype;
+
+    ddpclient.connect();
+    ddpclient.call();
+
+    assert("_test" in ddpclient._pendingMethods)
+  });
+
+  it('should remove id when callback is called', function() {
+    var ddpclient = new DDPClient();
+    ddpclient._getNextId = sinon.stub().returns('_test');
+    ddpclient._send = Function.prototype;
+
+    ddpclient.connect();
+    ddpclient.call();
+
+    assert("_test" in ddpclient._pendingMethods)
+
+    ddpclient._callbacks._test();
+    assert(!("_test" in ddpclient._pendingMethods))
+  });
+
+  it('should remove id when updated-callback is called', function() {
+    var ddpclient = new DDPClient();
+    ddpclient._getNextId = sinon.stub().returns('_test');
+    ddpclient._send = Function.prototype;
+
+    ddpclient.connect();
+    ddpclient.call();
+
+    assert("_test" in ddpclient._pendingMethods)
+
+    ddpclient._updatedCallbacks._test();
+    assert(!("_test" in ddpclient._pendingMethods))
+  });
+
+  it('should end method calls which could not be completed', function() {
+    var ddpclient = new DDPClient();
+    var callback = sinon.spy();
+    var updatedCallback = sinon.spy();
+
+    ddpclient._pendingMethods = { _test: true };
+    ddpclient._callbacks = { _test: callback };
+    ddpclient._updatedCallbacks = { _test: updatedCallback };
+
+    ddpclient.connect();
+    ddpclient.socket.emit('close', {});
+
+    assert(callback.calledOnce);
+    assert(callback.calledWithExactly(DDPClient.ERRORS.DISCONNECTED));
+
+    assert(updatedCallback.calledOnce);
+
+    // callbacks should be removed after calling them
+    assert(!("_test" in ddpclient._callbacks));
+    assert(!("_test" in ddpclient._updatedCallbacks));
+    assert(!("_test" in ddpclient._pendingMethods));
+  });
 });
 
 
