@@ -1,3 +1,9 @@
+0.11.0 — 2015-03-23
+
+  - Allow passing url to websocket connection string (#52)
+  - Allow passing TLS options to websocket connection (#53)
+  - Track method calls so it incomplete calls can be handled (#54)
+
 0.10.0 - 2015-02-03
 
   - Add optional SockJS support
