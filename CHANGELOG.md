@@ -1,3 +1,9 @@
+0.12.0 — 2016-03-31
+
+  - Update npm dependencies, including faye-websocket (#78)
+  - Catch JSON parsing exceptions (#77)
+  - Fix adding changed handler on observer creator (#72)
+
 0.11.0 — 2015-03-23
 
   - Allow passing url to websocket connection string (#52)
