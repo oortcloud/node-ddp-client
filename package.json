@@ -27,7 +27,7 @@
     "ddp-underscore-patched": "0.8.1-2",
     "ddp-ejson": "0.8.1-3",
     "faye-websocket": "0.11.0",
-    "request": "2.69.x"
+    "request": "2.74.x"
   },
   "devDependencies": {
     "mocha": "~2.4.5",
