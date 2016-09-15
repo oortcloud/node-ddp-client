@@ -1,3 +1,7 @@
+0.12.1 — 2016-09-15
+
+  - Update npm dependencies, including request, to fix vulnerability
+
 0.12.0 — 2016-03-31
 
   - Update npm dependencies, including faye-websocket (#78)
