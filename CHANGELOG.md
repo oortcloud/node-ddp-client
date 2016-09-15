@@ -1,6 +1,6 @@
 0.12.1 — 2016-09-15
 
-  - Update npm dependencies, including request, to fix vulnerability
+  - Update npm dependencies, including request, to fix vulnerability (#89)
 
 0.12.0 — 2016-03-31
 
