@@ -1,3 +1,11 @@
+0.12.2 — 2016-12-02
+
+  - Fix ignored sends when server is disconnected (#90)
+  - Pass data.fields as parameter to observer.added (#82)
+  - Improve autoreconnect behavior (#63, see discussion)
+  - Ensure connection status properly updated when optional connect function is omitted (#86)
+  - Update npm dependencies
+
 0.12.1 — 2016-09-15
 
   - Update npm dependencies, including request, to fix vulnerability (#89)

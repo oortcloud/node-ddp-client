@@ -1,6 +1,6 @@
 {
   "name": "ddp",
-  "version": "0.12.1",
+  "version": "0.12.2",
   "description": "Node.js module to connect to servers using DDP protocol.",
   "author": "Tom Coleman <tom@thesnail.org> (http://tom.thesnail.org)",
   "contributors": [
@@ -27,11 +27,11 @@
     "ddp-underscore-patched": "0.8.1-2",
     "ddp-ejson": "0.8.1-3",
     "faye-websocket": "0.11.0",
-    "request": "2.74.x"
+    "request": "2.79.0"
   },
   "devDependencies": {
-    "mocha": "~3.0.2",
-    "sinon": "~1.17.5",
+    "mocha": "~3.2.0",
+    "sinon": "~1.17.6",
     "rewire": "~2.5.2"
   },
   "scripts": {
